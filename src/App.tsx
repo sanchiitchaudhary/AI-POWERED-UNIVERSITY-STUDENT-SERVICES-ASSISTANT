@@ -105,7 +105,7 @@ export function App() {
   const openTicketCount = tickets.filter(t => t.status !== 'Resolved').length;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans radiant-bg selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-[#12141c] text-slate-900 flex flex-col font-sans selection:bg-slate-900 selection:text-white">
       
       {/* Top Navigation Bar */}
       <Navbar 

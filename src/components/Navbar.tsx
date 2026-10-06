@@ -3,15 +3,11 @@ import {
   GraduationCap, 
   Sparkles, 
   Bell, 
-  Mic, 
-  FileText, 
   Search, 
   ChevronDown, 
   ShieldCheck,
-  Zap,
   CheckCircle2,
-  Calendar,
-  AlertTriangle
+  Calendar
 } from 'lucide-react';
 import { StudentProfile } from '../types';
 
@@ -39,89 +35,48 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full glass-panel border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-[#12141c]/90 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         
-        {/* Brand & Logo */}
+        {/* Brand */}
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('dashboard')}>
-          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-cyan-400 p-0.5 shadow-lg shadow-indigo-500/20">
-            <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-              <GraduationCap className="w-5 h-5 text-indigo-400" />
-            </div>
-            <span className="absolute -top-1 -right-1 flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
-            </span>
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 text-slate-900 border border-slate-200">
+            <GraduationCap className="w-4 h-4 text-slate-900" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-indigo-300 bg-clip-text text-transparent">
-                UniAssist <span className="text-indigo-400">AI</span>
-              </span>
-              <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                HCL Hackathon
-              </span>
-            </div>
-            <p className="text-xs text-slate-400 hidden sm:block">University Student Services Assistant</p>
+          <div className="leading-none">
+            <span className="font-semibold text-base tracking-tight text-slate-100">
+              UniAssist
+            </span>
           </div>
         </div>
 
-        {/* Global Search Bar & Shortcuts */}
-        <div className="hidden md:flex flex-1 max-w-md items-center">
-          <div className="relative w-full">
+        {/* Command Bar */}
+        <div className="hidden md:flex flex-1 max-w-2xl items-center justify-center">
+          <div className="relative w-full max-w-xl">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
               type="text" 
-              placeholder="Ask UniAssist AI (e.g. transcript, GPA calculation, fee clearance)..."
+              placeholder="Search services, records, or requests..."
               onClick={() => setActiveTab('copilot')}
-              className="w-full pl-9 pr-24 py-1.5 text-xs bg-slate-900/90 border border-slate-800 rounded-full text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/60 transition-all cursor-pointer"
+              className="w-full pl-9 pr-12 py-2.5 text-xs bg-[#1a1d26] border border-white/10 rounded-xl text-white placeholder:text-slate-400 focus:outline-none focus:border-white/20 transition-colors cursor-pointer"
               readOnly
             />
-            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
-              <span className="text-[10px] bg-slate-800 px-1.5 py-0.5 rounded text-slate-400 border border-slate-700">⌘K</span>
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 text-[10px] text-slate-400">
+              <span className="px-1.5 py-0.5 rounded border border-white/10 bg-[#21262f] text-slate-200">⌘K</span>
             </div>
           </div>
         </div>
 
         {/* Action Controls */}
         <div className="flex items-center gap-2 sm:gap-3">
-          
-          {/* Quick Certificate Actions */}
-          <div className="hidden lg:flex items-center gap-2">
-            <button 
-              onClick={() => onOpenDocumentModal('transcript')}
-              className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-indigo-950/60 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-900/60 hover:border-indigo-400 transition-all"
-            >
-              <FileText className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Transcript PDF</span>
-            </button>
-            <button 
-              onClick={() => onOpenDocumentModal('bonafide')}
-              className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-purple-950/60 text-purple-300 border border-purple-500/30 hover:bg-purple-900/60 hover:border-purple-400 transition-all"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
-              <span>Bonafide Seal</span>
-            </button>
-          </div>
-
-          {/* Voice AI Assistant Mic Button */}
-          <button 
-            onClick={onVoiceTrigger}
-            title="Speak with AI Voice Assistant"
-            className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-cyan-600/30 to-indigo-600/30 border border-cyan-500/40 text-cyan-300 hover:from-cyan-600/50 hover:to-indigo-600/50 transition-all text-xs font-semibold group shadow-lg shadow-cyan-950"
-          >
-            <Mic className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform animate-pulse" />
-            <span className="hidden sm:inline">Voice Assistant</span>
-          </button>
-
           {/* Notifications Dropdown */}
           <div className="relative">
             <button 
               onClick={() => setShowNotifications(!showNotifications)}
-              className="relative p-2 rounded-xl bg-slate-900/90 text-slate-300 border border-slate-800 hover:border-slate-700 hover:text-white transition-all"
+              className="relative p-2 rounded-xl bg-slate-100 text-slate-900 border border-slate-200 hover:bg-slate-200 transition-colors"
             >
               <Bell className="w-4 h-4" />
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-indigo-500"></span>
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-slate-900"></span>
             </button>
 
             {showNotifications && (
@@ -159,16 +114,19 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="relative">
             <button 
               onClick={() => setShowProfileMenu(!showProfileMenu)}
-              className="flex items-center gap-2 pl-2 pr-1.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-all"
+              className="flex items-center gap-2 pl-2 pr-1.5 py-1 rounded-xl bg-slate-100 border border-slate-200 text-slate-900 transition-colors hover:bg-slate-200"
             >
-              <img 
-                src={student.avatar} 
-                alt={student.name} 
-                className="w-7 h-7 rounded-lg object-cover ring-2 ring-indigo-500/40"
-              />
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-[10px] font-semibold text-white ring-2 ring-slate-300">
+                {student.name
+                  .split(' ')
+                  .map(part => part[0])
+                  .slice(0, 2)
+                  .join('')
+                  .toUpperCase()}
+              </div>
               <div className="text-left hidden xl:block">
                 <p className="text-xs font-bold text-slate-200 leading-none">{student.name}</p>
-                <p className="text-[10px] text-indigo-400 font-mono leading-tight mt-0.5">GPA {student.gpa} • {student.id}</p>
+                <p className="text-[10px] text-slate-400 leading-tight mt-0.5">Student</p>
               </div>
               <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
             </button>
@@ -176,7 +134,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             {showProfileMenu && (
               <div className="absolute right-0 mt-2 w-64 rounded-2xl glass-card bg-slate-900/95 border border-slate-800 p-4 shadow-2xl z-50">
                 <div className="flex items-center gap-3 pb-3 border-b border-slate-800">
-                  <img src={student.avatar} alt={student.name} className="w-10 h-10 rounded-xl object-cover" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500/80 to-slate-700 text-xs font-semibold text-white">
+                    {student.name
+                      .split(' ')
+                      .map(part => part[0])
+                      .slice(0, 2)
+                      .join('')
+                      .toUpperCase()}
+                  </div>
                   <div>
                     <h4 className="text-xs font-bold text-slate-100">{student.name}</h4>
                     <p className="text-[11px] text-slate-400">{student.major}</p>

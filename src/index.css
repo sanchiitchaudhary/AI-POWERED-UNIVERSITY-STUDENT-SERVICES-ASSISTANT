@@ -25,46 +25,36 @@
   background: rgba(99, 102, 241, 0.8);
 }
 
-/* Glassmorphism card utilities */
+/* Dark charcoal canvas with off-white card surfaces */
+body {
+  background: #12141c;
+}
+
 .glass-panel {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #f3f5f7;
+  border: 1px solid rgba(148, 163, 184, 0.45);
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  background: #f8f9fa;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
 }
 
 .glass-card:hover {
-  border-color: rgba(99, 102, 241, 0.3);
-  box-shadow: 0 12px 40px 0 rgba(99, 102, 241, 0.15);
+  border-color: rgba(100, 116, 139, 0.5);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
 }
 
 .glass-button {
-  background: rgba(99, 102, 241, 0.15);
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  backdrop-filter: blur(8px);
-  transition: all 0.2s ease-in-out;
+  background: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  transition: all 0.2s ease;
 }
 
 .glass-button:hover {
-  background: rgba(99, 102, 241, 0.3);
-  border-color: rgba(129, 140, 248, 0.5);
-  box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
-}
-
-/* Radiant Mesh Background Glows */
-.radiant-bg {
-  background-image: 
-    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.1) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, rgba(129, 140, 248, 0.1) 0px, transparent 50%);
+  background: #f1f5f9;
+  border-color: rgba(51, 65, 85, 0.4);
 }
 
 /* Keyframe Animations */
