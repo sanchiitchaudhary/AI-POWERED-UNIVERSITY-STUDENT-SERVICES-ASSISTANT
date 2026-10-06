@@ -1,0 +1,85 @@
+================================================================================
+DEBUG TRACE FOR QUESTION: 'What if I pass CS601?'
+Student ID: HCL2026-8891 | As-of Date: 2026-10-06
+================================================================================
+
+[1] DETECTED INTENT & PLAN:
+{
+  "intent": "simulation_what_if",
+  "plan": "Route to simulation_what_if handler"
+}
+
+[2] GUARD DECISION:
+{
+  "is_refused": false,
+  "refusal_type": null,
+  "refusal_message": null
+}
+
+[3] RETRIEVED CHUNKS:
+[
+  {
+    "doc_id": "DOC-REG-2025-01",
+    "section": "Clause 3.1",
+    "page": 2,
+    "authority_level": 1,
+    "snippet_200": "Section 1.1: General Degree Requirements All undergraduate students enrolled in B.Tech Computer Science or related degree programmes must complete a minimum of 120 credits with a Cumulative Grade Poin"
+  }
+]
+
+[4] POLICY ENGINE DECISION:
+{
+  "applicable_evidence": [
+    "DOC-REG-2025-01"
+  ],
+  "decision": "proceed",
+  "has_conflict": false,
+  "is_only_level_5": false,
+  "upcoming_changes_count": 0,
+  "winning_rule": "R-ATT-01"
+}
+
+[5] TOOL CALLS:
+[
+  {
+    "tool": "simulate_result",
+    "input": {
+      "student_id": "HCL2026-8891",
+      "course_code": "CS601",
+      "assumed_result": "PASS"
+    },
+    "output": {
+      "status": "simulated",
+      "student_id": "HCL2026-8891",
+      "course_code": "CS601",
+      "assumed_result": "PASS",
+      "is_pass": true,
+      "pass_threshold_applied": ">=40.0",
+      "rule_code_applied": "R-PASS-01",
+      "current_gpa": 3.86,
+      "simulated_gpa": 3.91,
+      "note": "Simulation executed for course CS601 under assumption 'PASS'. Database state remains unmodified."
+    },
+    "rule_id": "R-PASS-01",
+    "threshold_read": ">=40.0"
+  }
+]
+
+[6] EXACT PROMPT SENT TO LLM & RAW RESPONSE:
+Prompt length: 1406 chars
+Raw Response: Simulated LLM synthesis based on 1 citations.
+
+[7] VERIFIER CHECKS:
+{
+  "has_citations": true,
+  "is_supported": true,
+  "numbers_verifiable": true
+}
+
+[8] FINAL RESPONSE SUMMARY:
+{
+  "answer_type": "calculated",
+  "confidence": 0.95,
+  "citations_count": 1,
+  "tools_count": 1
+}

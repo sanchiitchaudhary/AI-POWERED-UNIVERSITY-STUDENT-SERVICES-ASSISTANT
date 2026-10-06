@@ -1,0 +1,94 @@
+================================================================================
+DEBUG TRACE FOR QUESTION: 'What is my attendance in CS601?'
+Student ID: HCL2026-8891 | As-of Date: 2026-10-06
+================================================================================
+
+[1] DETECTED INTENT & PLAN:
+{
+  "intent": "attendance_check",
+  "plan": "Route to attendance_check handler"
+}
+
+[2] GUARD DECISION:
+{
+  "is_refused": false,
+  "refusal_type": null,
+  "refusal_message": null
+}
+
+[3] RETRIEVED CHUNKS:
+[
+  {
+    "doc_id": "DOC-CIRC-2026-04",
+    "section": "Clause 2.0",
+    "page": 1,
+    "authority_level": 2,
+    "snippet_200": "Clause 1.0: Condonation of Attendance Shortage Effective 2026-09-01, students belonging to batches 2023 onwards with attendance between 65% and 74% may submit a medical certificate or dean's permissio"
+  },
+  {
+    "doc_id": "DOC-REG-2025-01",
+    "section": "Clause 3.1",
+    "page": 2,
+    "authority_level": 1,
+    "snippet_200": "Section 1.1: General Degree Requirements All undergraduate students enrolled in B.Tech Computer Science or related degree programmes must complete a minimum of 120 credits with a Cumulative Grade Poin"
+  },
+  {
+    "doc_id": "DOC-UNOFFICIAL-01",
+    "section": "General",
+    "page": 1,
+    "authority_level": 5,
+    "snippet_200": "Unofficial Tip: Passing Exams without Attendance Some senior students claim that professors don't check attendance below 60%. Note: This is unofficial advice and not an authorized university rule...."
+  }
+]
+
+[4] POLICY ENGINE DECISION:
+{
+  "applicable_evidence": [
+    "DOC-CIRC-2026-04",
+    "DOC-REG-2025-01",
+    "DOC-UNOFFICIAL-01"
+  ],
+  "decision": "proceed",
+  "has_conflict": false,
+  "is_only_level_5": false,
+  "upcoming_changes_count": 0,
+  "winning_rule": "R-ATT-01"
+}
+
+[5] TOOL CALLS:
+[
+  {
+    "tool": "get_student_attendance",
+    "input": {
+      "student_id": "HCL2026-8891",
+      "course_code": "CS601"
+    },
+    "output": {
+      "student_id": "HCL2026-8891",
+      "course_code": "CS601",
+      "attendance_pct": 88.5,
+      "title": "Deep Learning & Neural Networks"
+    },
+    "rule_id": "R-ATT-01",
+    "threshold_read": "75"
+  }
+]
+
+[6] EXACT PROMPT SENT TO LLM & RAW RESPONSE:
+Prompt length: 1946 chars
+Raw Response: Simulated LLM synthesis based on 3 citations.
+
+[7] VERIFIER CHECKS:
+{
+  "has_citations": true,
+  "is_supported": true,
+  "numbers_verifiable": true
+}
+
+[8] FINAL RESPONSE SUMMARY:
+{
+  "answer_type": "calculated",
+  "confidence": 0.95,
+  "citations_count": 3,
+  "tools_count": 1
+}

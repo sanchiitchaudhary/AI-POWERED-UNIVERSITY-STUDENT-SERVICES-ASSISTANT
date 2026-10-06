@@ -1,0 +1,52 @@
+================================================================================
+DEBUG TRACE FOR QUESTION: 'What is the policy for orbital space station rocket launches?'
+Student ID: None | As-of Date: 2026-10-06
+================================================================================
+
+[1] DETECTED INTENT & PLAN:
+{
+  "intent": "general_policy",
+  "plan": "Route to general_policy handler"
+}
+
+[2] GUARD DECISION:
+{
+  "is_refused": false,
+  "refusal_type": null,
+  "refusal_message": null
+}
+
+[3] RETRIEVED CHUNKS:
+[]
+
+[4] POLICY ENGINE DECISION:
+{
+  "applicable_evidence": [],
+  "decision": "not_found",
+  "has_conflict": false,
+  "is_only_level_5": false,
+  "upcoming_changes_count": 0,
+  "winning_rule": "R-ATT-01"
+}
+
+[5] TOOL CALLS:
+[]
+
+[6] EXACT PROMPT SENT TO LLM & RAW RESPONSE:
+Prompt length: 1155 chars
+Raw Response: Simulated LLM synthesis based on 0 citations.
+
+[7] VERIFIER CHECKS:
+{
+  "has_citations": false,
+  "is_supported": false,
+  "numbers_verifiable": true
+}
+
+[8] FINAL RESPONSE SUMMARY:
+{
+  "answer_type": "not_found",
+  "confidence": 0.0,
+  "citations_count": 0,
+  "tools_count": 0
+}
