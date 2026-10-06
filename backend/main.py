@@ -1,6 +1,7 @@
 import time
 import uuid
 import json
+import re
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 from fastapi import FastAPI, Header, HTTPException, UploadFile, File, Response, status
@@ -146,7 +147,6 @@ def ask_question(
     if "simulate" in q_lower or "what if" in q_lower or "suppose i pass" in q_lower:
         if student_id:
             # Extract course code (e.g. CS601, CS501)
-            import re
             c_match = re.search(r'\b(cs\d{3}|jdg\d{3})\b', q_lower)
             course_code = c_match.group(1).upper() if c_match else "CS601"
             sim_res = simulate_result(student_id, course_code, "PASS", as_of_date)
@@ -171,9 +171,12 @@ def ask_question(
                 trace_id=trace_id
             )
 
-    # Step 3: Attendance Querying Tool
-    if "attendance" in q_lower and student_id:
-        import re
+    # Step 3: Personal Attendance Querying Tool
+    is_personal_att_query = (
+        ("my attendance" in q_lower or "what is my attendance" in q_lower or "check my attendance" in q_lower or "show my attendance" in q_lower) or
+        ("attendance" in q_lower and bool(re.search(r'\b(cs\d{3}|jdg\d{3})\b', q_lower)))
+    )
+    if is_personal_att_query and student_id:
         c_match = re.search(r'\b(cs\d{3}|jdg\d{3})\b', q_lower)
         course_code = c_match.group(1).upper() if c_match else "CS601"
         att_data = get_student_attendance(student_id, course_code)
@@ -235,7 +238,27 @@ def ask_question(
 
     # Step 4: RAG Vector Search & Precedence Rule Engine
     citations, upcoming_changes, is_only_level_5 = rag_service.query_legacy(req.question, as_of_date=as_of_date)
-    rule, has_conflict, _ = get_applicable_rules("min_attendance_pct", as_of_date)
+    
+    # Topic-specific Rule Match (only apply relevant rules)
+    applied_rules = []
+    rule = None
+    has_conflict = False
+    if "attendance" in q_lower or "condonation" in q_lower:
+        rule, has_conflict, _ = get_applicable_rules("min_attendance_pct", as_of_date)
+    elif "cgpa" in q_lower or "gpa" in q_lower or "graduation" in q_lower:
+        rule, has_conflict, _ = get_applicable_rules("min_cgpa", as_of_date)
+    elif "backlog" in q_lower:
+        rule, has_conflict, _ = get_applicable_rules("max_backlogs", as_of_date)
+
+    if rule:
+        val_str = f">={rule['value']}%" if "attendance" in rule['parameter'] else str(rule['value'])
+        applied_rules.append(AppliedRule(
+            rule_code=rule['rule_code'],
+            parameter=rule['parameter'],
+            operator=rule['operator'],
+            value=val_str,
+            source_doc_id=rule['source_doc_id']
+        ))
 
     if has_conflict:
         latency = (time.time() - start_time) * 1000
@@ -283,15 +306,6 @@ def ask_question(
     # Formulate Direct Retrieval Answer
     top_cite = citations[0]
     answer_text = f"According to '{top_cite.doc_title}' (Clause {top_cite.section}): {top_cite.snippet}"
-    applied_rules = []
-    if rule:
-        applied_rules.append(AppliedRule(
-            rule_code=rule['rule_code'],
-            parameter=rule['parameter'],
-            operator=rule['operator'],
-            value=f">={rule['value']}%",
-            source_doc_id=rule['source_doc_id']
-        ))
 
     latency = (time.time() - start_time) * 1000
     log_audit_record(trace_id, as_of_date, student_id, "direct_retrieval", citations, applied_rules, [], 1, latency)

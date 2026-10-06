@@ -282,7 +282,7 @@ How can I help you today? You can ask me to:
             <div className={`space-y-2 text-xs leading-relaxed ${
               msg.sender === 'user'
                 ? 'bg-indigo-600 text-white p-4 rounded-2xl rounded-tr-none shadow-lg shadow-indigo-600/20 border border-indigo-400/30'
-                : 'glass-card bg-slate-900/90 text-slate-200 p-4 rounded-2xl rounded-tl-none border border-slate-800'
+                : 'bg-slate-900 text-slate-100 p-4 rounded-2xl rounded-tl-none border border-slate-700/80 shadow-md shadow-slate-950/50'
             }`}>
               {/* Message text with basic Markdown styling support */}
               <div className="whitespace-pre-wrap font-sans">
