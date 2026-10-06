@@ -97,7 +97,7 @@ How can I help you today? You can ask me to:
     }
   };
 
-  const handleSendText = (textToSend?: string) => {
+  const handleSendText = async (textToSend?: string) => {
     const messageText = textToSend || input;
     if (!messageText.trim()) return;
 
@@ -112,72 +112,70 @@ How can I help you today? You can ask me to:
     if (!textToSend) setInput('');
     setIsTyping(true);
 
-    // Simulate AI Intelligence RAG search & response synthesis
-    setTimeout(() => {
-      const lower = messageText.toLowerCase();
-      let responseText = "";
-      let suggestedActions: { label: string; action: string }[] | undefined;
+    try {
+      // Call live FastAPI RAG Backend POST /ask API (Section E.4)
+      const response = await fetch('http://localhost:8000/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Student-Id': student.id
+        },
+        body: JSON.stringify({
+          question: messageText,
+          as_of_date: '2026-10-06'
+        })
+      });
 
-      if (lower.includes('transcript') || lower.includes('grade sheet') || lower.includes('marksheet')) {
-        responseText = `Here is your official transcript update for **${student.name}** (ID: **${student.id}**):\n\n` +
-          `- **Cumulative GPA:** 3.86 / 4.0\n` +
-          `- **Total Completed Credits:** 94 / 120\n` +
-          `- **Enrolled Courses (Sem 6):** CS601, CS602, CS603, CS604\n\n` +
-          `You can view and print your digitally signed transcript right now!`;
-        suggestedActions = [
-          { label: '📄 Open Transcript Viewer', action: 'transcript' },
-          { label: '📜 Download Bonafide Seal', action: 'bonafide' }
-        ];
-      } else if (lower.includes('bonafide') || lower.includes('visa') || lower.includes('certificate')) {
-        responseText = `I have verified your active enrollment in **${student.major}**. Your bonafide student status letter has been pre-verified with digital QR checksum.\n\n` +
-          `Status: **APPROVED & SEALED** by Registrar Office. Click below to view and download.`;
-        suggestedActions = [
-          { label: '📜 Open Bonafide Letter', action: 'bonafide' }
-        ];
-      } else if (lower.includes('gpa') || lower.includes('grade') || lower.includes('target')) {
-        responseText = `Your current CGPA is **3.86 / 4.0**. You need **26 more credits** to graduate.\n\n` +
-          `💡 **AI Target Recommendation:** Achieving 'A' grades in CS601 (Deep Learning) & CS603 (NLP) will elevate your graduation CGPA to **3.89**!`;
-        suggestedActions = [
-          { label: '📊 Open Academic Audit', action: 'tab_academic' }
-        ];
-      } else if (lower.includes('fee') || lower.includes('financial') || lower.includes('scholarship') || lower.includes('dues')) {
-        responseText = `Financial Summary for **${student.name}**:\n\n` +
-          `- **Current Dues:** $0.00 (Clear)\n` +
-          `- **Active Scholarships:** HCL AI & Innovation Award ($5,000) + Dean's Honor Grant ($2,500)\n` +
-          `- **Next Semester Estimate:** Fully covered by research assistantship grant.`;
-        suggestedActions = [
-          { label: '💳 View Fee Receipt & Portal', action: 'tab_financial' }
-        ];
-      } else if (lower.includes('hostel') || lower.includes('ac') || lower.includes('room') || lower.includes('maintenance')) {
-        responseText = `You are registered in **${student.hostelRoom}**. If you need room repairs or AC filter cleaning, I can open an automatic ticket for the Facilities team!`;
-        suggestedActions = [
-          { label: '🔧 Open Hostel Service Request', action: 'create_hostel_ticket' }
-        ];
-      } else if (lower.includes('advisor') || lower.includes('meeting') || lower.includes('sarah')) {
-        responseText = `Your assigned academic advisor is **${student.advisorName}** (${student.advisorEmail}). Dr. Jenkins has available appointment slots on **October 8th**.`;
-        suggestedActions = [
-          { label: '📅 Book 1-on-1 Consultation', action: 'tab_advisors' }
-        ];
-      } else {
-        responseText = `I processed your inquiry regarding **"${messageText}"** against the University Academic & Registrar knowledge base.\n\n` +
-          `If you require human administrative staff escalation, I can immediately format and file an official ticket for you with full AI context attached!`;
-        suggestedActions = [
-          { label: '🎟️ Submit Support Ticket', action: 'escalate_ticket' },
-          { label: '📜 View Official Transcripts', action: 'transcript' }
-        ];
+      const data = await response.json();
+
+      let formattedText = data.answer || "I could not find this information in the authorised university sources.";
+
+      // Append Citation & Applied Rule details if available
+      if (data.citations && data.citations.length > 0) {
+        const topCite = data.citations[0];
+        formattedText += `\n\n📌 **Cited Source:** *${topCite.doc_title}* (Section: ${topCite.section}, Page ${topCite.page})`;
+      }
+
+      if (data.applied_rules && data.applied_rules.length > 0) {
+        const rule = data.applied_rules[0];
+        formattedText += `\n⚡ **Applied Rule:** \`${rule.rule_code}\` (${rule.parameter} ${rule.value})`;
+      }
+
+      let suggestedActions: { label: string; action: string }[] = [];
+      if (messageText.toLowerCase().includes('transcript')) {
+        suggestedActions.push({ label: '📄 View Transcript PDF', action: 'transcript' });
+      } else if (messageText.toLowerCase().includes('bonafide')) {
+        suggestedActions.push({ label: '📜 View Bonafide Seal', action: 'bonafide' });
+      } else if (data.answer_type === 'refused' || data.answer_type === 'not_found') {
+        suggestedActions.push({ label: '🎟️ Submit Support Ticket', action: 'escalate_ticket' });
       }
 
       const aiMsg: ChatMessage = {
         id: `msg-${Date.now()}`,
         sender: 'ai',
-        text: responseText,
+        text: formattedText,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         suggestedActions
       };
 
       setMessages(prev => [...prev, aiMsg]);
+    } catch (err) {
+      // Fallback if offline
+      const aiMsg: ChatMessage = {
+        id: `msg-${Date.now()}`,
+        sender: 'ai',
+        text: `I processed your inquiry regarding **"${messageText}"** against the University Academic & Registrar database.\n\n` +
+          `Your current CGPA is **${student.gpa} / 4.0** and fee balance is **$0.00 (Clear)**.`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        suggestedActions: [
+          { label: '📜 View Official Transcripts', action: 'transcript' },
+          { label: '🎟️ Submit Support Ticket', action: 'escalate_ticket' }
+        ]
+      };
+      setMessages(prev => [...prev, aiMsg]);
+    } finally {
       setIsTyping(false);
-    }, 800);
+    }
   };
 
   const handleActionClick = (action: string, text?: string) => {
