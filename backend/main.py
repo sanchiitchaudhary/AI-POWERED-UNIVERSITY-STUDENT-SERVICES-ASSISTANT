@@ -7,7 +7,7 @@ from fastapi import FastAPI, Header, HTTPException, UploadFile, File, Response, 
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
 
-from backend.config import DEFAULT_AS_OF_DATE, OLLAMA_HOST, OLLAMA_MODEL
+from backend.config import DEFAULT_AS_OF_DATE, OLLAMA_HOST, OLLAMA_MODEL, OLLAMA_API_KEY
 from backend.database import init_db, get_db_connection
 from backend.models import (
     AskRequest, 
@@ -99,6 +99,7 @@ def health_check(response: Response):
             "llm": {
                 "model": OLLAMA_MODEL,
                 "host": OLLAMA_HOST,
+                "api_key_configured": bool(OLLAMA_API_KEY),
                 "reachable": True
             }
         }
