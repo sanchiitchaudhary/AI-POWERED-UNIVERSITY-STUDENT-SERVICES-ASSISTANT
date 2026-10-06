@@ -1,0 +1,521 @@
+================================================================================
+DEBUG TRACE FOR QUESTION: 'What is the fee structure for Semester III, V, and VII?'
+Student ID: S1001 | As-Of Date: 2026-10-06
+================================================================================
+
+[1] RETRIEVED CHUNKS (Top 10 raw vector hits):
+  Rank 01 | Score/Dist: 0.8983 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 13
+          Snippet: will be reimbursed university and tuition fee component out of the overall  fee for that academic year.  This reimbursement shall be applicable for the  second year also provided she/he maintains  a C...
+  Rank 02 | Score/Dist: 0.9265 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 45
+          Snippet: Course Title, Branch, Semester, Code, UG/PG 1. Detailed Course Plan (To be attached) 2. Details of students’ attendance record (To be attached) Class/Group size: ………………………………………. 45...
+  Rank 03 | Score/Dist: 0.9697 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 44
+          Snippet: 3. Date of Joining NSUT: ............................. 4. Details of Courses Taught During the Assessment Period:  A. Odd Semester: Title, Branch, Semester, Code, UG/PG, Theory/Lab 1. ----------------...
+  Rank 04 | Score/Dist: 0.9738 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 22
+          Snippet: 8. Other sources not covered above D. Declaration by Student:  Particulars furnished in this application are  correct, accurate and complete to the best of my knowledge and belief. I  promise that in ...
+  Rank 05 | Score/Dist: 1.0096 | doc_id: DOC-ACAD-2024 | title: 'Academic Regulations 2024 (BTech/MTech)' | section: Clause 7.2 | page: 3
+          Snippet: Condonation fee, per course (clause 7.2) Rs. 1000 Rs. 1000 10. Eligibility for campus placement 10.1  A student is eligible to register for campus placement if both of the following are true on the da...
+  Rank 06 | Score/Dist: 1.0103 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 12
+          Snippet: are seeking admission in the first year course of MBA in NSUT will be  given an incentive in form of reimbursement of university and tuition fee  component out of the overall fee for that academic yea...
+  Rank 07 | Score/Dist: 1.0154 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: General | page: 6
+          Snippet: university level societies and clubs are active in the campus like Technical  Societies, Non-Technical Societies, Recreational Clubs, Literary Clubs,  Automotive Clubs and Community Service Initiative...
+  Rank 08 | Score/Dist: 1.0165 | doc_id: DOC-FEE-SCHED | title: 'Fee Structure III V VII Semesters' | section: General | page: 2
+          Snippet: [Scanned page 1 - fee schedule and circular details] [Scanned page 2 - fee schedule and circular details]...
+  Rank 09 | Score/Dist: 1.0222 | doc_id: DOC-ACAD-2024 | title: 'Academic Regulations 2024 (BTech/MTech)' | section: Clause 7.3 | page: 3
+          Snippet: Table 2: Fees (in Indian Rupees) Fee B.Tech M.Tech Supplementary examination fee, per course...
+  Rank 10 | Score/Dist: 1.0380 | doc_id: DOC-SUMMER | title: 'Summer Semester Guidelines' | section: General | page: 3
+          Snippet: [Scanned page 1 - fee schedule and circular details] [Scanned page 2 - fee schedule and circular details] [Scanned page 3 - fee schedule and circular details]...
+
+[2] METADATA FILTERS & THRESHOLDING:
+  Raw retrieved chunks: 10
+  Valid citations after date/distance/scope filter: 4
+  Chunks filtered out: 6
+
+[3] LLM PROMPT & CONTEXT BOUNDS:
+  Prompt Length: 494 chars | Approx Token Count: 98 tokens
+  Evidence Truncated: NO
+  Prompt Text Preview:
+  ---
+  You are UniAssist AI assistant. Answer the user question based ONLY on the following official context.
+
+CONTEXT:
+will be reimbursed university and tuition fee component out of the overall  fee for that academic year.  This reimbursement shall be applicable for the  second year also provided she/he m...
+  ---
+
+[4] LLM CALL PARAMETERS:
+  Host: http://localhost:11434
+  Model: llama3:latest
+  Temperature: 0.0
+  num_ctx: 4096 (Ollama default)
+  num_predict: 512
+  Format: JSON / Plain Text
+
+[5] RAW & PARSED RESPONSE:
+  Parsed Answer: According to 'CVSPK Scholarship Guidelines 2024-25' (Clause 7): will be reimbursed university and tuition fee component out of the overall fee for that academic year. This reimbursement shall be applicable for the second year also provided she/he maintains a Cumulative Grade Point Average (CGPA) of 7.5 of tw
+  Answer Type: direct_retrieval
+  Confidence: 0.92
+  Trace ID: TRC-cbfd6adb
+
+[6] VERIFIER OUTCOMES:
+  Citation Grounding Check: PASS
+  Rule Precedence Check: PASS
+  Privacy Guardrail Check: PASS
+
+[7] FINAL API RESPONSE JSON:
+{
+  "answer": "According to 'CVSPK Scholarship Guidelines 2024-25' (Clause 7): will be reimbursed university and tuition fee component out of the overall fee for that academic year. This reimbursement shall be applicable for the second year also provided she/he maintains a Cumulative Grade Point Average (CGPA) of 7.5 of tw",
+  "answer_type": "direct_retrieval",
+  "confidence": 0.92,
+  "citations": [
+    {
+      "doc_id": "DOC-CVSPK-SCH",
+      "doc_title": "CVSPK Scholarship Guidelines 2024-25",
+      "page": 13,
+      "section": "Clause 7",
+      "authority_level": 2,
+      "effective_from": "2024-08-15",
+      "snippet": "will be reimbursed university and tuition fee component out of the overall  fee for that academic year.  This reimbursement shall be applicable for the  second year also provided she/he maintains  a Cumulative Grade Point  Average (CGPA) of 7.5 of tw..."
+    },
+    {
+      "doc_id": "DOC-CVSPK-SCH",
+      "doc_title": "CVSPK Scholarship Guidelines 2024-25",
+      "page": 45,
+      "section": "Clause 7",
+      "authority_level": 2,
+      "effective_from": "2024-08-15",
+      "snippet": "Course Title, Branch, Semester, Code, UG/PG 1. Detailed Course Plan (To be attached) 2. Details of students\u2019 attendance record (To be attached) Class/Group size: \u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026. 45..."
+    },
+    {
+      "doc_id": "DOC-CVSPK-SCH",
+      "doc_title": "CVSPK Scholarship Guidelines 2024-25",
+      "page": 22,
+      "section": "Clause 7",
+      "authority_level": 2,
+      "effective_from": "2024-08-15",
+      "snippet": "8. Other sources not covered above D. Declaration by Student:  Particulars furnished in this application are  correct, accurate and complete to the best of my knowledge and belief. I  promise that in case any aforesaid information is found incorrect ..."
+    },
+    {
+      "doc_id": "DOC-ACAD-2024",
+      "doc_title": "Academic Regulations 2024 (BTech/MTech)",
+      "page": 3,
+      "section": "Clause 7.2",
+      "authority_level": 1,
+      "effective_from": "2024-07-01",
+      "snippet": "Condonation fee, per course (clause 7.2) Rs. 1000 Rs. 1000 10. Eligibility for campus placement 10.1  A student is eligible to register for campus placement if both of the following are true on the date of..."
+    }
+  ],
+  "applied_rules": [],
+  "tools_invoked": [],
+  "upcoming_changes": [],
+  "retrieved_fact": "will be reimbursed university and tuition fee component out of the overall  fee for that academic year.  This reimbursement shall be applicable for th",
+  "trace_id": "TRC-cbfd6adb"
+}
+================================================================================
+
+================================================================================
+DEBUG TRACE FOR QUESTION: 'What is the policy for summer semester course registration?'
+Student ID: S1001 | As-Of Date: 2026-10-06
+================================================================================
+
+[1] RETRIEVED CHUNKS (Top 10 raw vector hits):
+  Rank 01 | Score/Dist: 0.9412 | doc_id: DOC-PLACEMENT | title: 'University Placement & Internship Policy' | section: General | page: 4
+          Snippet: well before registering. Students cannot withdraw from any selection round post the registration. This includes PPT, Online tests, GDs, interviews, etc. Failure in abiding by the above would have stri...
+  Rank 02 | Score/Dist: 1.0259 | doc_id: DOC-PLACEMENT | title: 'University Placement & Internship Policy' | section: General | page: 1
+          Snippet: PLACEMENT POLICY 2025-26 (STUDENTS) TRAINING AND PLACEMENT...
+  Rank 03 | Score/Dist: 1.0294 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 45
+          Snippet: Course Title, Branch, Semester, Code, UG/PG 1. Detailed Course Plan (To be attached) 2. Details of students’ attendance record (To be attached) Class/Group size: ………………………………………. 45...
+  Rank 04 | Score/Dist: 1.0389 | doc_id: DOC-ACAD-2024 | title: 'Academic Regulations 2024 (BTech/MTech)' | section: General | page: 1
+          Snippet: 1.3  Students admitted before 2023 continue to be governed by ACAD-REG-2021. 2. Definitions 2.1  Course means a unit of instruction carrying a course code, a fixed number of credits and a semester. 2....
+  Rank 05 | Score/Dist: 1.0525 | doc_id: DOC-PLACEMENT | title: 'University Placement & Internship Policy' | section: General | page: 2
+          Snippet: experience.  All students are thereby requested to follow the placement rules and regulations during the entire placement season. These guidelines are designed to ensure transparency, equal opportunit...
+  Rank 06 | Score/Dist: 1.0637 | doc_id: DOC-ETHICS | title: 'Digital Ethics & AI Policy Guidelines' | section: General | page: 1
+          Snippet: in the University. These guidelines...
+  Rank 07 | Score/Dist: 1.0651 | doc_id: DOC-ACAD-2024 | title: 'Academic Regulations 2024 (BTech/MTech)' | section: General | page: 1
+          Snippet: 1. Short title, scope and applicability 1.1  These regulations are called the Academic Regulations for B.Tech and M.Tech Programmes, Version  3.1 (ACAD-REG-2024). 1.2  They apply to all students of th...
+  Rank 08 | Score/Dist: 1.0868 | doc_id: DOC-PLACEMENT | title: 'University Placement & Internship Policy' | section: Clause . | page: 8
+          Snippet: in strict action by the University. Additionally, the Training and Placement Section expects students to maintain a high level of discipline and professionalism throughout their employment. In case of...
+  Rank 09 | Score/Dist: 1.1110 | doc_id: DOC-PLACEMENT | title: 'University Placement & Internship Policy' | section: Clause . | page: 9
+          Snippet: attendance records for the student. He/She shall contact their respective department officials to issue a NoC and for granting attendance. th Students must conduct themselves professionally and courte...
+  Rank 10 | Score/Dist: 1.1196 | doc_id: DOC-PLACEMENT | title: 'University Placement & Internship Policy' | section: Clause . | page: 11
+          Snippet: Off-Campus Offer Rules Drop Subject Rules Kindly refer the below table regarding Subject Drop policy for various Courses: BTech(Final year) BTech(Pre-Final Year)...
+
+[2] METADATA FILTERS & THRESHOLDING:
+  Raw retrieved chunks: 10
+  Valid citations after date/distance/scope filter: 4
+  Chunks filtered out: 6
+
+[3] LLM PROMPT & CONTEXT BOUNDS:
+  Prompt Length: 498 chars | Approx Token Count: 92 tokens
+  Evidence Truncated: NO
+  Prompt Text Preview:
+  ---
+  You are UniAssist AI assistant. Answer the user question based ONLY on the following official context.
+
+CONTEXT:
+well before registering. Students cannot withdraw from any selection round post the registration. This includes PPT, Online tests, GDs, interviews, etc. Failure in abiding by the above wo...
+  ---
+
+[4] LLM CALL PARAMETERS:
+  Host: http://localhost:11434
+  Model: llama3:latest
+  Temperature: 0.0
+  num_ctx: 4096 (Ollama default)
+  num_predict: 512
+  Format: JSON / Plain Text
+
+[5] RAW & PARSED RESPONSE:
+  Parsed Answer: According to 'University Placement & Internship Policy' (Clause General): well before registering. Students cannot withdraw from any selection round post the registration. This includes PPT, Online tests, GDs, interviews, etc. Failure in abiding by the above would have strict actions taken by College Authorities. Resumes s
+  Answer Type: direct_retrieval
+  Confidence: 0.92
+  Trace ID: TRC-0432a654
+
+[6] VERIFIER OUTCOMES:
+  Citation Grounding Check: PASS
+  Rule Precedence Check: PASS
+  Privacy Guardrail Check: PASS
+
+[7] FINAL API RESPONSE JSON:
+{
+  "answer": "According to 'University Placement & Internship Policy' (Clause General): well before registering. Students cannot withdraw from any selection round post the registration. This includes PPT, Online tests, GDs, interviews, etc. Failure in abiding by the above would have strict actions taken by College Authorities. Resumes s",
+  "answer_type": "direct_retrieval",
+  "confidence": 0.92,
+  "citations": [
+    {
+      "doc_id": "DOC-PLACEMENT",
+      "doc_title": "University Placement & Internship Policy",
+      "page": 4,
+      "section": "General",
+      "authority_level": 2,
+      "effective_from": "2024-06-01",
+      "snippet": "well before registering. Students cannot withdraw from any selection round post the registration. This includes PPT, Online tests, GDs, interviews, etc. Failure in abiding by the above would have strict actions taken by College Authorities. Resumes s..."
+    },
+    {
+      "doc_id": "DOC-PLACEMENT",
+      "doc_title": "University Placement & Internship Policy",
+      "page": 1,
+      "section": "General",
+      "authority_level": 2,
+      "effective_from": "2024-06-01",
+      "snippet": "PLACEMENT POLICY 2025-26 (STUDENTS) TRAINING AND PLACEMENT..."
+    },
+    {
+      "doc_id": "DOC-CVSPK-SCH",
+      "doc_title": "CVSPK Scholarship Guidelines 2024-25",
+      "page": 45,
+      "section": "Clause 7",
+      "authority_level": 2,
+      "effective_from": "2024-08-15",
+      "snippet": "Course Title, Branch, Semester, Code, UG/PG 1. Detailed Course Plan (To be attached) 2. Details of students\u2019 attendance record (To be attached) Class/Group size: \u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026. 45..."
+    },
+    {
+      "doc_id": "DOC-ACAD-2024",
+      "doc_title": "Academic Regulations 2024 (BTech/MTech)",
+      "page": 1,
+      "section": "General",
+      "authority_level": 1,
+      "effective_from": "2024-07-01",
+      "snippet": "1.3  Students admitted before 2023 continue to be governed by ACAD-REG-2021. 2. Definitions 2.1  Course means a unit of instruction carrying a course code, a fixed number of credits and a semester. 2.2  Active backlog means a course in which the late..."
+    }
+  ],
+  "applied_rules": [],
+  "tools_invoked": [],
+  "upcoming_changes": [],
+  "retrieved_fact": "well before registering. Students cannot withdraw from any selection round post the registration. This includes PPT, Online tests, GDs, interviews, et",
+  "trace_id": "TRC-0432a654"
+}
+================================================================================
+
+================================================================================
+DEBUG TRACE FOR QUESTION: 'What is the condonation attendance limit for batch 2023 onwards?'
+Student ID: S1001 | As-Of Date: 2026-10-06
+================================================================================
+
+[1] RETRIEVED CHUNKS (Top 10 raw vector hits):
+  Rank 01 | Score/Dist: 0.7373 | doc_id: DOC-CIRC-2026-04 | title: 'Attendance Threshold & Supplementary Rules Circular' | section: Clause 2.0 | page: 1
+          Snippet: Clause 1.0: Condonation of Attendance Shortage Effective 2026-09-01, students belonging to batches 2023 onwards with attendance between 65% and 74% may submit a medical certificate or dean's permissio...
+  Rank 02 | Score/Dist: 0.7808 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 60
+          Snippet: 2. Details of developments/new experiments added/repair and maintenance  carried out. 60 3. Details of students’ attendance record: Batch size:...
+  Rank 03 | Score/Dist: 0.7970 | doc_id: DOC-ACAD-2024 | title: 'Academic Regulations 2024 (BTech/MTech)' | section: Clause 7.2 | page: 2
+          Snippet: granted condonation at most twice during the programme. 7.3  Detention. Attendance below 65 percent cannot be condoned. The student is recorded as DETAINED  in that course, may not appear in its end-s...
+  Rank 04 | Score/Dist: 0.9068 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 45
+          Snippet: Number of scheduled lectures: ………………………………… Number of lectures actually held: ……………………………. Number of students having attendance: (>= 90%):   ------------------------------  (>= 80%):   ---------------...
+  Rank 05 | Score/Dist: 1.0078 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 60
+          Snippet: Number of scheduled lab classes:  Number of lab classes actually held:  Number of students having attendance (>= 90%):   ------------------------------  (>= 80%):   ------------------------------ ...
+  Rank 06 | Score/Dist: 1.0162 | doc_id: DOC-ACAD-2024 | title: 'Academic Regulations 2024 (BTech/MTech)' | section: Clause 7.3 | page: 3
+          Snippet: 8. Detention and promotion 8.1  A student detained in a course under clause 7.3 shall attend that course again with the next batch as a  regular student. 8.2  A student who has more than 4 active back...
+  Rank 07 | Score/Dist: 1.0192 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 46
+          Snippet: Number of students having attendance 46 (>= 90%):   ------------------------------  (>= 80%):   ------------------------------  (>= 75%):   ------------------------------ ...
+  Rank 08 | Score/Dist: 1.0278 | doc_id: DOC-ACAD-2024 | title: 'Academic Regulations 2024 (BTech/MTech)' | section: Clause 7.2 | page: 3
+          Snippet: Condonation fee, per course (clause 7.2) Rs. 1000 Rs. 1000 10. Eligibility for campus placement 10.1  A student is eligible to register for campus placement if both of the following are true on the da...
+  Rank 09 | Score/Dist: 1.0620 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 45
+          Snippet: Course Title, Branch, Semester, Code, UG/PG 1. Detailed Course Plan (To be attached) 2. Details of students’ attendance record (To be attached) Class/Group size: ………………………………………. 45...
+  Rank 10 | Score/Dist: 1.0640 | doc_id: DOC-ACAD-2024 | title: 'Academic Regulations 2024 (BTech/MTech)' | section: Clause 7.1 | page: 2
+          Snippet:  student must have attendance of at least 75 percent in that course (B.Tech) or at least 80 percent in that course (M.Tech), subject to clauses 7.2 and 7.4. 7.2  Condonation of shortage. Where attenda...
+
+[2] METADATA FILTERS & THRESHOLDING:
+  Raw retrieved chunks: 10
+  Valid citations after date/distance/scope filter: 4
+  Chunks filtered out: 6
+
+[3] LLM PROMPT & CONTEXT BOUNDS:
+  Prompt Length: 503 chars | Approx Token Count: 91 tokens
+  Evidence Truncated: NO
+  Prompt Text Preview:
+  ---
+  You are UniAssist AI assistant. Answer the user question based ONLY on the following official context.
+
+CONTEXT:
+Clause 1.0: Condonation of Attendance Shortage Effective 2026-09-01, students belonging to batches 2023 onwards with attendance between 65% and 74% may submit a medical certificate or dea...
+  ---
+
+[4] LLM CALL PARAMETERS:
+  Host: http://localhost:11434
+  Model: llama3:latest
+  Temperature: 0.0
+  num_ctx: 4096 (Ollama default)
+  num_predict: 512
+  Format: JSON / Plain Text
+
+[5] RAW & PARSED RESPONSE:
+  Parsed Answer: According to 'Attendance Threshold & Supplementary Rules Circular' (Clause 2.0): Clause 1.0: Condonation of Attendance Shortage Effective 2026-09-01, students belonging to batches 2023 onwards with attendance between 65% and 74% may submit a medical certificate or dean's permission letter for condonation of attendance shortage up
+  Answer Type: direct_retrieval
+  Confidence: 0.92
+  Trace ID: TRC-7bf0e840
+
+[6] VERIFIER OUTCOMES:
+  Citation Grounding Check: PASS
+  Rule Precedence Check: PASS
+  Privacy Guardrail Check: PASS
+
+[7] FINAL API RESPONSE JSON:
+{
+  "answer": "According to 'Attendance Threshold & Supplementary Rules Circular' (Clause 2.0): Clause 1.0: Condonation of Attendance Shortage Effective 2026-09-01, students belonging to batches 2023 onwards with attendance between 65% and 74% may submit a medical certificate or dean's permission letter for condonation of attendance shortage up",
+  "answer_type": "direct_retrieval",
+  "confidence": 0.92,
+  "citations": [
+    {
+      "doc_id": "DOC-CIRC-2026-04",
+      "doc_title": "Attendance Threshold & Supplementary Rules Circular",
+      "page": 1,
+      "section": "Clause 2.0",
+      "authority_level": 2,
+      "effective_from": "2026-09-01",
+      "snippet": "Clause 1.0: Condonation of Attendance Shortage Effective 2026-09-01, students belonging to batches 2023 onwards with attendance between 65% and 74% may submit a medical certificate or dean's permission letter for condonation of attendance shortage up..."
+    },
+    {
+      "doc_id": "DOC-CVSPK-SCH",
+      "doc_title": "CVSPK Scholarship Guidelines 2024-25",
+      "page": 60,
+      "section": "Clause 7",
+      "authority_level": 2,
+      "effective_from": "2024-08-15",
+      "snippet": "2. Details of developments/new experiments added/repair and maintenance  carried out. 60 3. Details of students\u2019 attendance record: Batch size:..."
+    },
+    {
+      "doc_id": "DOC-ACAD-2024",
+      "doc_title": "Academic Regulations 2024 (BTech/MTech)",
+      "page": 2,
+      "section": "Clause 7.2",
+      "authority_level": 1,
+      "effective_from": "2024-07-01",
+      "snippet": "granted condonation at most twice during the programme. 7.3  Detention. Attendance below 65 percent cannot be condoned. The student is recorded as DETAINED  in that course, may not appear in its end-semester examination and must repeat the course whe..."
+    },
+    {
+      "doc_id": "DOC-CVSPK-SCH",
+      "doc_title": "CVSPK Scholarship Guidelines 2024-25",
+      "page": 45,
+      "section": "Clause 7",
+      "authority_level": 2,
+      "effective_from": "2024-08-15",
+      "snippet": "Number of scheduled lectures: \u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026 Number of lectures actually held: \u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026. Number of students having attendance: (>= 90%):   ------------------------------  (>= 80%):   ------------------------------ ..."
+    }
+  ],
+  "applied_rules": [
+    {
+      "rule_code": "R-ATT-01",
+      "parameter": "min_attendance_pct",
+      "operator": ">=",
+      "value": ">=75%",
+      "source_doc_id": "DOC-REG-2025-01"
+    }
+  ],
+  "tools_invoked": [],
+  "upcoming_changes": [],
+  "retrieved_fact": "Clause 1.0: Condonation of Attendance Shortage Effective 2026-09-01, students belonging to batches 2023 onwards with attendance between 65% and 74% ma",
+  "trace_id": "TRC-7bf0e840"
+}
+================================================================================
+
+================================================================================
+DEBUG TRACE FOR QUESTION: 'What is my current fee balance and scholarship status?'
+Student ID: S1001 | As-Of Date: 2026-10-06
+================================================================================
+
+[1] RETRIEVED CHUNKS (Top 10 raw vector hits):
+  Rank 01 | Score/Dist: 1.0012 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 14
+          Snippet: APPLICATION FORM FOR SCHOLARSHIPS FOR THE TOP 5% STUDENTS  OF EACH BRANCH OF EACH ACADEMIC PROGRAM OF THE UNIVERSITY 1. Name of student:  …………………………………………………………… 2. Father’s name: ……………………………………………………...
+  Rank 02 | Score/Dist: 1.0207 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 12
+          Snippet: 3. Criteria for Sanction of Scholarship and Incentives: The criteria for sanction of scholarship and incentives to realize objectives  1 and   2 of clause 7 of CVSPK Rules 2020 are as follows: A. Scho...
+  Rank 03 | Score/Dist: 1.0311 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 19
+          Snippet: Eligibility (Gross Annual Family  Income of Student from all  Sources) Percentage of Financial Assis- tance in university fees and Tui-...
+  Rank 04 | Score/Dist: 1.0539 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 11
+          Snippet: To realize objectives 1 and 2 of clause 7 of CVSPK Rules 2020 by providing: i. Reimbursement of university and tuition fees for the entire duration of  the course to rankers of Entrance Examination se...
+  Rank 05 | Score/Dist: 1.0664 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 13
+          Snippet: will be reimbursed university and tuition fee component out of the overall  fee for that academic year.  This reimbursement shall be applicable for the  second year also provided she/he maintains  a C...
+  Rank 06 | Score/Dist: 1.1035 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 18
+          Snippet: 3. Objective of CVSPK FWS Financial Assistance Scheme: To realize objective 3 of clause 7 of CVSPK Rules 2020 by providing financial  assistance to the meritorious and needy students of the University...
+  Rank 07 | Score/Dist: 1.1199 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 21
+          Snippet: These rules shall be called the Netaji Subhas University of Technology  Chhatra Vittiya Sahayta Kosh fee reimbursement/waiver   in Case of  Death of earning parent , Rules 2020 2. Criteria for Sanctio...
+  Rank 08 | Score/Dist: 1.1449 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 18
+          Snippet: Date:   Name Of Student          Signature Of Student 18 Part 2: CVSPK FINANCIALLY WEAKER STUDENTS (FWS) ...
+  Rank 09 | Score/Dist: 1.1467 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: General | page: 8
+          Snippet: the student and shall be named as CVSPK fee reimbursement/waiver in  cases of Death of earning parent(s) Rules. 4. Scope: These Rules shall apply to every student seeking a degree from Netaji  Subhas ...
+  Rank 10 | Score/Dist: 1.1607 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: General | page: 1
+          Snippet: 1 	Financial Assistance to the students of the University pursuing  higher education - Chattra Vittiya Sahayata Evam Protsahan  Kosh (CVSPK) Rules 2020 of NSUT 	Guidelines/Policy for financial assis...
+
+[2] METADATA FILTERS & THRESHOLDING:
+  Raw retrieved chunks: 10
+  Valid citations after date/distance/scope filter: 4
+  Chunks filtered out: 6
+
+[3] LLM PROMPT & CONTEXT BOUNDS:
+  Prompt Length: 493 chars | Approx Token Count: 96 tokens
+  Evidence Truncated: NO
+  Prompt Text Preview:
+  ---
+  You are UniAssist AI assistant. Answer the user question based ONLY on the following official context.
+
+CONTEXT:
+3. Criteria for Sanction of Scholarship and Incentives: The criteria for sanction of scholarship and incentives to realize objectives  1 and   2 of clause 7 of CVSPK Rules 2020 are as fol...
+  ---
+
+[4] LLM CALL PARAMETERS:
+  Host: http://localhost:11434
+  Model: llama3:latest
+  Temperature: 0.0
+  num_ctx: 4096 (Ollama default)
+  num_predict: 512
+  Format: JSON / Plain Text
+
+[5] RAW & PARSED RESPONSE:
+  Parsed Answer: Financial & Scholarship Status for Priya Sharma (S1001):
+• **Current Fee Balance**: ₹0 (Paid in Full for Current Academic Session)
+• **Scholarship Status**: Eligible for Application (Requires CGPA >= 7.50) (Based on current CGPA: 3.42)
+  Answer Type: calculated
+  Confidence: 0.99
+  Trace ID: TRC-15533442
+
+[6] VERIFIER OUTCOMES:
+  Citation Grounding Check: PASS
+  Rule Precedence Check: PASS
+  Privacy Guardrail Check: PASS
+
+[7] FINAL API RESPONSE JSON:
+{
+  "answer": "Financial & Scholarship Status for Priya Sharma (S1001):\n\u2022 **Current Fee Balance**: \u20b90 (Paid in Full for Current Academic Session)\n\u2022 **Scholarship Status**: Eligible for Application (Requires CGPA >= 7.50) (Based on current CGPA: 3.42)",
+  "answer_type": "calculated",
+  "confidence": 0.99,
+  "citations": [],
+  "applied_rules": [],
+  "tools_invoked": [
+    {
+      "tool": "get_student_profile",
+      "input": {
+        "student_id": "S1001"
+      },
+      "output": {
+        "student_id": "S1001",
+        "name": "Priya Sharma",
+        "programme": "B.Tech Computer Science",
+        "batch": "2024",
+        "email": "priya.s@university.edu",
+        "gpa": 3.42,
+        "status": "Active"
+      }
+    }
+  ],
+  "upcoming_changes": [],
+  "retrieved_fact": "Student S1001 CGPA: 3.42, Fee Balance: 0",
+  "trace_id": "TRC-15533442"
+}
+================================================================================
+
+================================================================================
+DEBUG TRACE FOR QUESTION: 'What is the policy for orbital space station rocket launches?'
+Student ID: S1001 | As-Of Date: 2026-10-06
+================================================================================
+
+[1] RETRIEVED CHUNKS (Top 10 raw vector hits):
+  Rank 01 | Score/Dist: 1.2996 | doc_id: DOC-PLACEMENT | title: 'University Placement & Internship Policy' | section: General | page: 3
+          Snippet: Off-Campus Offer Rules Subject Drop Policy CGPA Calculation Rules and Guidelines Penalty Structure ...
+  Rank 02 | Score/Dist: 1.4289 | doc_id: DOC-PLACEMENT | title: 'University Placement & Internship Policy' | section: Clause . | page: 8
+          Snippet: in strict action by the University. Additionally, the Training and Placement Section expects students to maintain a high level of discipline and professionalism throughout their employment. In case of...
+  Rank 03 | Score/Dist: 1.4594 | doc_id: DOC-ETHICS | title: 'Digital Ethics & AI Policy Guidelines' | section: General | page: 3
+          Snippet: action will be taken against...
+  Rank 04 | Score/Dist: 1.4662 | doc_id: DOC-PLACEMENT | title: 'University Placement & Internship Policy' | section: Clause . | page: 8
+          Snippet: preparation (GATE,CAT,UPSC preparation), they must inform the Placement Section at the earliest, and no later than 15th May 2026, along with valid supporting documents. No penalty will be imposed if t...
+  Rank 05 | Score/Dist: 1.4819 | doc_id: DOC-PLACEMENT | title: 'University Placement & Internship Policy' | section: General | page: 1
+          Snippet: PLACEMENT POLICY 2025-26 (STUDENTS) TRAINING AND PLACEMENT...
+  Rank 06 | Score/Dist: 1.4862 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 26
+          Snippet: xvii.Grant shall not be given for merely attending a conference, Panel  Discussions, Internships, Group Discussions and other group activities  under these Regulations. xviii.No reimbursement will be ...
+  Rank 07 | Score/Dist: 1.4918 | doc_id: DOC-PLACEMENT | title: 'University Placement & Internship Policy' | section: Clause . | page: 14
+          Snippet: Actions Penalty Sharing confidential placement-related information (e.g., company names, offer details, process dates) with outsiders or on public platforms. 30 Days ban from all new and existing plac...
+  Rank 08 | Score/Dist: 1.4950 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 49
+          Snippet: Date: ………………………..       Signature of Chairman: ………….……………… *The above recommendations of the committee are to be supported by minutes  of the meeting. ******* 49...
+  Rank 09 | Score/Dist: 1.4986 | doc_id: DOC-CVSPK-SCH | title: 'CVSPK Scholarship Guidelines 2024-25' | section: Clause 7 | page: 23
+          Snippet: Following guidelines shall be observed / enforced in order to ensure benefit to  maximum number of eligible UG/PG students and proper utilization of grant  under the head of account “Students Fund” in...
+  Rank 10 | Score/Dist: 1.5026 | doc_id: DOC-PLACEMENT | title: 'University Placement & Internship Policy' | section: Clause . | page: 14
+          Snippet: appropriate decisions. 13 Rules & Guidelines To ensure a smooth and fair placement process, the Training and Placement (T&P) Section follows a strict penalty structure for any misconduct. The penaltie...
+
+[2] METADATA FILTERS & THRESHOLDING:
+  Raw retrieved chunks: 10
+  Valid citations after date/distance/scope filter: 0
+  Chunks filtered out: 10
+
+[3] LLM PROMPT & CONTEXT BOUNDS:
+  Prompt Length: 269 chars | Approx Token Count: 49 tokens
+  Evidence Truncated: NO
+  Prompt Text Preview:
+  ---
+  You are UniAssist AI assistant. Answer the user question based ONLY on the following official context.
+
+CONTEXT:
+No evidence retrieved.
+
+QUESTION: What is the policy for orbital space station rocket launches?
+
+Provide a clear, student-friendly 2-3 sentence explanation....
+  ---
+
+[4] LLM CALL PARAMETERS:
+  Host: http://localhost:11434
+  Model: llama3:latest
+  Temperature: 0.0
+  num_ctx: 4096 (Ollama default)
+  num_predict: 512
+  Format: JSON / Plain Text
+
+[5] RAW & PARSED RESPONSE:
+  Parsed Answer: I could not find this information in the authorised university sources.
+  Answer Type: not_found
+  Confidence: 0.0
+  Trace ID: TRC-ec993ee7
+
+[6] VERIFIER OUTCOMES:
+  Citation Grounding Check: PASS
+  Rule Precedence Check: PASS
+  Privacy Guardrail Check: PASS
+
+[7] FINAL API RESPONSE JSON:
+{
+  "answer": "I could not find this information in the authorised university sources.",
+  "answer_type": "not_found",
+  "confidence": 0.0,
+  "citations": [],
+  "applied_rules": [],
+  "tools_invoked": [],
+  "upcoming_changes": [],
+  "retrieved_fact": null,
+  "trace_id": "TRC-ec993ee7"
+}
+================================================================================
+

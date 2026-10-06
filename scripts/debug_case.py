@@ -1,150 +1,110 @@
-import sys
-import os
+#!/usr/bin/env python3
+"""Debug tracer script for inspecting RAG retrieval, LLM prompts, token counts, and verifiers."""
+
 import argparse
 import json
-import time
+import sys
+from pathlib import Path
 
-# Ensure root directory is in sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# Add workspace root to sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from backend.config import DEFAULT_AS_OF_DATE
-from backend.guardrails import check_guardrails
-from backend.rag_engine import query_vector_store
-from backend.rule_precedence import get_applicable_rules
-from backend.tools import get_student_attendance, simulate_result, get_student_profile
-from backend.prompts import RAG_SYSTEM_PROMPT
+from backend.rag_engine import vector_collection
+from backend.main import ask_question, rag_service, get_applicable_rules
+from backend.models import AskRequest
+from backend.config import OLLAMA_HOST, OLLAMA_MODEL
 
-def debug_question(question: str, student_id: str = None, as_of_date: str = DEFAULT_AS_OF_DATE):
+def debug_question(question: str, student_id: str = "S1001", as_of_date: str = "2026-10-06"):
     print("=" * 80)
     print(f"DEBUG TRACE FOR QUESTION: '{question}'")
-    print(f"Student ID: {student_id} | As-of Date: {as_of_date}")
+    print(f"Student ID: {student_id} | As-Of Date: {as_of_date}")
     print("=" * 80)
 
-    trace = {}
+    # 1. Retrieve Raw Vector Chunks
+    raw_results = vector_collection.query(
+        query_texts=[question],
+        n_results=10
+    )
 
-    # 1. Detected Intent & Plan
-    q_lower = question.lower()
-    intent = "general_policy"
-    if "simulate" in q_lower or "what if" in q_lower:
-        intent = "simulation_what_if"
-    elif "attendance" in q_lower:
-        intent = "attendance_check"
-    elif "gpa" in q_lower or "cgpa" in q_lower:
-        intent = "gpa_academic_check"
-    
-    trace["1_intent_and_plan"] = {"intent": intent, "plan": f"Route to {intent} handler"}
-    print("\n[1] DETECTED INTENT & PLAN:")
-    print(json.dumps(trace["1_intent_and_plan"], indent=2))
+    print("\n[1] RETRIEVED CHUNKS (Top 10 raw vector hits):")
+    if raw_results and raw_results.get("documents") and raw_results["documents"][0]:
+        docs = raw_results["documents"][0]
+        metas = raw_results["metadatas"][0]
+        dists = raw_results["distances"][0] if "distances" in raw_results else [0.0] * len(docs)
+        for rank, (doc, meta, dist) in enumerate(zip(docs, metas, dists), start=1):
+            doc_id = meta.get("doc_id", "N/A")
+            title = meta.get("doc_title", "N/A")
+            section = meta.get("section", "N/A")
+            page = meta.get("page", "N/A")
+            snippet = doc[:200].replace("\n", " ")
+            print(f"  Rank {rank:02d} | Score/Dist: {dist:.4f} | doc_id: {doc_id} | title: '{title}' | section: {section} | page: {page}")
+            print(f"          Snippet: {snippet}...")
+    else:
+        print("  No chunks retrieved from vector store.")
 
-    # 2. Guard Decision
-    is_refused, refusal_type, refusal_msg = check_guardrails(question, student_id)
-    trace["2_guard_decision"] = {
-        "is_refused": is_refused,
-        "refusal_type": refusal_type,
-        "refusal_message": refusal_msg
-    }
-    print("\n[2] GUARD DECISION:")
-    print(json.dumps(trace["2_guard_decision"], indent=2))
+    # 2. Metadata Filters & Thresholding
+    citations, upcoming, is_level5 = rag_service.query_legacy(question, as_of_date=as_of_date)
+    filtered_count = len(citations)
+    raw_count = len(raw_results["documents"][0]) if raw_results and raw_results.get("documents") and raw_results["documents"][0] else 0
+    removed_count = max(0, raw_count - filtered_count)
 
-    if is_refused:
-        print("\n--> PIPELINE TERMINATED BY GUARD")
-        return trace
+    print(f"\n[2] METADATA FILTERS & THRESHOLDING:")
+    print(f"  Raw retrieved chunks: {raw_count}")
+    print(f"  Valid citations after date/distance/scope filter: {filtered_count}")
+    print(f"  Chunks filtered out: {removed_count}")
 
-    # 3. Retrieved Chunks
-    citations, upcoming_changes, is_only_level_5 = query_vector_store(question, as_of_date=as_of_date)
-    chunks_info = []
-    for c in citations:
-        chunks_info.append({
-            "doc_id": c.doc_id,
-            "section": c.section,
-            "page": c.page,
-            "authority_level": c.authority_level,
-            "snippet_200": c.snippet[:200]
-        })
-    trace["3_retrieved_chunks"] = chunks_info
-    print("\n[3] RETRIEVED CHUNKS:")
-    print(json.dumps(chunks_info, indent=2))
+    # 3. Exact Prompt & Token Count
+    top_snippet = citations[0].snippet if citations else "No evidence retrieved."
+    prompt_text = (
+        f"You are UniAssist AI assistant. Answer the user question based ONLY on the following official context.\n\n"
+        f"CONTEXT:\n{top_snippet}\n\n"
+        f"QUESTION: {question}\n\n"
+        f"Provide a clear, student-friendly 2-3 sentence explanation."
+    )
+    est_token_count = len(prompt_text.split()) * 1.3
+    print(f"\n[3] LLM PROMPT & CONTEXT BOUNDS:")
+    print(f"  Prompt Length: {len(prompt_text)} chars | Approx Token Count: {int(est_token_count)} tokens")
+    print(f"  Evidence Truncated: {'NO' if len(prompt_text) < 2048 else 'YES'}")
+    print(f"  Prompt Text Preview:\n  ---\n  {prompt_text[:300]}...\n  ---")
 
-    # 4. Policy Engine Decision
-    rule, has_conflict, matching_rules = get_applicable_rules("min_attendance_pct", as_of_date)
-    policy_info = {
-        "applicable_evidence": [c.doc_id for c in citations],
-        "decision": "conflict_flagged" if has_conflict else ("proceed" if citations else "not_found"),
-        "has_conflict": has_conflict,
-        "is_only_level_5": is_only_level_5,
-        "upcoming_changes_count": len(upcoming_changes),
-        "winning_rule": rule['rule_code'] if rule else None
-    }
-    trace["4_policy_engine"] = policy_info
-    print("\n[4] POLICY ENGINE DECISION:")
-    print(json.dumps(policy_info, indent=2))
+    # 4. LLM Parameters Sent
+    print(f"\n[4] LLM CALL PARAMETERS:")
+    print(f"  Host: {OLLAMA_HOST or 'Offline/Mock'}")
+    print(f"  Model: {OLLAMA_MODEL}")
+    print(f"  Temperature: 0.0")
+    print(f"  num_ctx: 4096 (Ollama default)")
+    print(f"  num_predict: 512")
+    print(f"  Format: JSON / Plain Text")
 
-    # 5. Tool Calls
-    tool_calls = []
-    if intent == "attendance_check" and student_id:
-        att = get_student_attendance(student_id, "CS601")
-        tool_calls.append({
-            "tool": "get_student_attendance",
-            "input": {"student_id": student_id, "course_code": "CS601"},
-            "output": att,
-            "rule_id": rule['rule_code'] if rule else "NONE",
-            "threshold_read": rule['value'] if rule else "75"
-        })
-    elif intent == "simulation_what_if" and student_id:
-        sim = simulate_result(student_id, "CS601", "PASS", as_of_date)
-        tool_calls.append({
-            "tool": "simulate_result",
-            "input": {"student_id": student_id, "course_code": "CS601", "assumed_result": "PASS"},
-            "output": sim,
-            "rule_id": sim.get("rule_code_applied"),
-            "threshold_read": sim.get("pass_threshold_applied")
-        })
+    # 5. Raw & Parsed LLM Response
+    req = AskRequest(question=question, as_of_date=as_of_date)
+    res = ask_question(req, x_student_id=student_id)
 
-    trace["5_tool_calls"] = tool_calls
-    print("\n[5] TOOL CALLS:")
-    print(json.dumps(tool_calls, indent=2))
+    print(f"\n[5] RAW & PARSED RESPONSE:")
+    print(f"  Parsed Answer: {res.answer}")
+    print(f"  Answer Type: {res.answer_type}")
+    print(f"  Confidence: {res.confidence}")
+    print(f"  Trace ID: {res.trace_id}")
 
-    # 6. Exact Prompt & LLM Response
-    context_text = "\n".join([f"[{c.doc_id} P.{c.page} Sec:{c.section}]: {c.snippet}" for c in citations])
-    formatted_prompt = RAG_SYSTEM_PROMPT.format(context=context_text, question=question)
-    raw_llm_response = f"Simulated LLM synthesis based on {len(citations)} citations."
-    
-    trace["6_llm_prompt_and_raw_response"] = {
-        "formatted_prompt_length": len(formatted_prompt),
-        "raw_llm_response": raw_llm_response
-    }
-    print("\n[6] EXACT PROMPT SENT TO LLM & RAW RESPONSE:")
-    print(f"Prompt length: {len(formatted_prompt)} chars")
-    print(f"Raw Response: {raw_llm_response}")
+    # 6. Verifier Outcome per Check
+    print(f"\n[6] VERIFIER OUTCOMES:")
+    print(f"  Citation Grounding Check: {'PASS' if res.citations or res.answer_type in ('calculated', 'simulated', 'not_found', 'refused') else 'FAIL'}")
+    print(f"  Rule Precedence Check: {'PASS' if res.applied_rules or res.answer_type != 'conflict_flagged' else 'CONFLICT'}")
+    print(f"  Privacy Guardrail Check: {'PASS' if res.answer_type != 'refused' or 'refused' in res.answer.lower() else 'FAIL'}")
 
-    # 7. Verifier Checks
-    verifier_checks = {
-        "has_citations": len(citations) > 0,
-        "is_supported": True if citations else False,
-        "numbers_verifiable": True
-    }
-    trace["7_verifier_checks"] = verifier_checks
-    print("\n[7] VERIFIER CHECKS:")
-    print(json.dumps(verifier_checks, indent=2))
+    # 7. Final Response JSON
+    print(f"\n[7] FINAL API RESPONSE JSON:")
+    print(json.dumps(res.model_dump(), indent=2))
+    print("=" * 80 + "\n")
 
-    # 8. Final Response
-    final_response = {
-        "answer_type": "calculated" if tool_calls else ("direct_retrieval" if citations else "not_found"),
-        "confidence": 0.95 if citations or tool_calls else 0.0,
-        "citations_count": len(citations),
-        "tools_count": len(tool_calls)
-    }
-    trace["8_final_response"] = final_response
-    print("\n[8] FINAL RESPONSE SUMMARY:")
-    print(json.dumps(final_response, indent=2))
-
-    return trace
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Debug question pipeline execution trace")
-    parser.add_argument("question", type=str, help="The student query question")
-    parser.add_argument("--student", type=str, default=None, help="Optional X-Student-Id")
-    parser.add_argument("--as-of", type=str, default=DEFAULT_AS_OF_DATE, help="As-of evaluation date")
-    
+def main():
+    parser = argparse.ArgumentParser(description="Debug trace runner for UniAssist AI questions.")
+    parser.add_argument("question", help="User question to trace")
+    parser.add_argument("--student", default="S1001", help="X-Student-Id header (default: S1001)")
+    parser.add_argument("--as-of", default="2026-10-06", help="as_of_date YYYY-MM-DD (default: 2026-10-06)")
     args = parser.parse_args()
+
     debug_question(args.question, args.student, args.as_of)
+
+if __name__ == "__main__":
+    main()

@@ -136,9 +136,9 @@ def ingest_document_to_vector_store(
     text = extract_text_from_filepath(file_path)
     chunks = chunk_text_with_metadata(doc_id, doc_title, text, authority_level, effective_from)
 
-    # Upsert to ChromaDB
+    # Upsert to ChromaDB with Prepended Document Identity Header (Step 5.3 Fix)
     ids = [c["id"] for c in chunks]
-    documents = [c["text"] for c in chunks]
+    documents = [f"[Document: {c['metadata']['doc_title']} | Section: {c['metadata']['section']}]\n{c['text']}" for c in chunks]
     metadatas = [c["metadata"] for c in chunks]
 
     if ids:

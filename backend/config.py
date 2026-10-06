@@ -21,3 +21,7 @@ AUTO_RULE_EXTRACTION = os.environ.get("AUTO_RULE_EXTRACTION", "false").lower() =
 
 # Top K vector hits
 TOP_K = int(os.environ.get("TOP_K", "4"))
+
+# Context & Output Token Limits (Step 5.1 Fix)
+OLLAMA_NUM_CTX = int(os.environ.get("OLLAMA_NUM_CTX", "4096"))
+OLLAMA_NUM_PREDICT = int(os.environ.get("OLLAMA_NUM_PREDICT", "1024"))
