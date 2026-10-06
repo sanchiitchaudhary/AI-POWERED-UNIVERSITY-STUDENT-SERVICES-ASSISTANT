@@ -1,0 +1,7 @@
+rule_code,parameter,operator,value,scope_programmes,scope_batches,source_doc_id,source_section,source_page,quote_under_15_words,confidence,status
+R-ATT-01,min_attendance_pct,>=,75,ALL,ALL,DOC-GENERAL-REG-2025,Section 2.4,1,must maintain a minimum of 75% attendance,0.98,proposed
+R-ATT-COND-01,condonation_attendance_pct,between,"65,74",ALL,2023+,DOC-ATT-CIRC-2026,Clause 1.0,1,attendance between 65% and 74% may submit medical certificate,0.95,proposed
+R-PASS-01,min_pass_marks,>=,40,ALL,ALL,DOC-GENERAL-REG-2025,Section 3.1,2,minimum of 40% marks in combined internal and end-semester,0.99,proposed
+R-SUPP-01,supp_exam_marks_range,between,"30,39",ALL,ALL,DOC-ATT-CIRC-2026,Clause 2.0,1,students securing between 30% and 39% may sit for supplementary exam,0.92,proposed
+R-PLACE-01,min_placement_cgpa,>=,6.0,B.Tech;M.Tech,2021+,DOC-PLACEMENT-POLICY,Section 2.1,2,minimum CGPA of 6.00 with no active backlogs,0.9,proposed
+R-SUMMER-01,max_summer_backlog_credits,<=,8,ALL,ALL,DOC-SUMMER-SEM,Page 1,1,register for maximum 8 credits of backlog courses,0.88,proposed
