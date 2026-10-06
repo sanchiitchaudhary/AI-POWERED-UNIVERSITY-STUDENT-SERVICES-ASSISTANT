@@ -1,0 +1,37 @@
+course_code,course_name,programme,semester,credits
+CS101,Programming Fundamentals,B.Tech CSE,1,4
+MA101,Engineering Mathematics-I,B.Tech CSE,1,4
+EC101,Digital Electronics,B.Tech CSE,1,3
+CS201,Data Structures,B.Tech CSE,3,4
+CS202,Object Oriented Programming,B.Tech CSE,3,4
+MA201,Discrete Mathematics,B.Tech CSE,3,4
+CS301,Database Management Systems,B.Tech CSE,5,4
+CS302,Computer Networks,B.Tech CSE,5,4
+CS303,Operating Systems,B.Tech CSE,5,4
+CS304,Web Technologies,B.Tech CSE,5,3
+CS305,Software Engineering,B.Tech CSE,5,3
+CS401,Artificial Intelligence,B.Tech CSE,7,4
+CS402,Machine Learning,B.Tech CSE,7,4
+CS403,Cyber Security,B.Tech CSE,7,3
+CS404,Cloud Computing,B.Tech CSE,7,3
+CS405,Big Data Analytics,B.Tech CSE,7,3
+CS406,Distributed Systems,B.Tech CSE,7,4
+CS407,Natural Language Processing,B.Tech CSE,7,3
+CS408,Project-I,B.Tech CSE,7,4
+CS409,Professional Ethics,B.Tech CSE,7,2
+IT301,Database Systems,B.Tech IT,5,4
+IT302,Data Communication and Networks,B.Tech IT,5,4
+IT303,Operating Systems,B.Tech IT,5,4
+IT304,Web Technology,B.Tech IT,5,3
+IT305,Software Engineering,B.Tech IT,5,3
+IT401,Information Security,B.Tech IT,7,4
+IT402,Cloud and Edge Computing,B.Tech IT,7,3
+IT403,Data Mining,B.Tech IT,7,3
+IT404,Mobile Application Development,B.Tech IT,7,3
+IT405,Internet of Things,B.Tech IT,7,3
+MT201,Advanced Algorithms,M.Tech CSE,2,4
+MT202,Machine Learning Foundations,M.Tech CSE,2,4
+MT203,Research Methodology,M.Tech CSE,2,3
+MT301,Deep Learning,M.Tech CSE,3,4
+MT302,Advanced Database Systems,M.Tech CSE,3,4
+MT303,Elective I,M.Tech CSE,3,3

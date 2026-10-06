@@ -1,0 +1,1 @@
+"""Source register loader placeholder."""

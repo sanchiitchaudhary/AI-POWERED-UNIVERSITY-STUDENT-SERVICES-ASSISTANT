@@ -1,0 +1,14 @@
+rule_id,description,parameter,operator,value,scope_programmes,scope_batches,effective_from,effective_to,source_doc_id,source_section
+ATT-MIN-01,Minimum attendance to appear in the end-semester exam of a course (B.Tech),min_attendance_pct,>=,75,B.Tech,ALL,2024-07-01,,ACAD-REG-2024,7.1
+ATT-MIN-02,Minimum attendance to appear in the end-semester exam of a course (M.Tech),min_attendance_pct,>=,80,M.Tech,ALL,2024-07-01,,ACAD-REG-2024,7.1
+ATT-MIN-03,Revised minimum attendance for B.Tech students admitted in 2025 or later,min_attendance_pct,>=,80,B.Tech,2025+,2026-08-01,,ACAD-CIR-2026-08,2.1
+ATT-DETAIN-01,Attendance below this percentage cannot be condoned; student is detained from the exam,detention_below_pct,<,65,"B.Tech,M.Tech",ALL,2024-07-01,,ACAD-REG-2024,7.3
+ATT-DETAIN-02,Revised detention threshold for B.Tech students admitted in 2025 or later,detention_below_pct,<,70,B.Tech,2025+,2026-08-01,,ACAD-CIR-2026-08,3.2
+COND-BLOCK-01,Condonation of attendance shortage is not available with more than 4 active backlogs,active_backlogs,>,4,ALL,ALL,2024-07-01,,ACAD-REG-2024,7.4
+RES-PASS-01,Minimum total marks to pass a course (B.Tech),total_marks,>=,40,B.Tech,ALL,2024-07-01,,ACAD-REG-2024,4.2
+RES-PASS-02,Minimum total marks to pass a course (M.Tech),total_marks,>=,50,M.Tech,ALL,2024-07-01,,ACAD-REG-2024,4.2
+RES-EXT-01,Minimum external marks to pass a course (B.Tech),external_marks,>=,24,B.Tech,ALL,2024-07-01,,ACAD-REG-2024,4.3
+RES-EXT-02,Minimum external marks to pass a course (M.Tech),external_marks,>=,30,M.Tech,ALL,2024-07-01,,ACAD-REG-2024,4.3
+PLACE-CGPA-01,Minimum CGPA to sit for placement (B.Tech),min_cgpa_placement,>=,6.00,B.Tech,ALL,2024-07-01,,ACAD-REG-2024,10.1
+PLACE-CGPA-02,Minimum CGPA to sit for placement (M.Tech),min_cgpa_placement,>=,6.50,M.Tech,ALL,2024-07-01,,ACAD-REG-2024,10.1
+PLACE-BACKLOG-01,No active backlogs allowed to sit for placement,max_active_backlogs_placement,<=,0,ALL,ALL,2024-07-01,,ACAD-REG-2024,10.1
