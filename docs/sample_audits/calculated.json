@@ -1,0 +1,35 @@
+{
+  "trace_id": "TRC-c22dbe67",
+  "timestamp": "2026-10-06 07:48:56",
+  "as_of_date": "2026-10-06",
+  "student_id": "HCL2026-8891",
+  "question_masked": "[REDACTED]",
+  "answer_type": "calculated",
+  "applied_rules": [
+    {
+      "rule_code": "R-ATT-01",
+      "parameter": "min_attendance_pct",
+      "operator": ">=",
+      "value": ">=75%",
+      "source_doc_id": "DOC-REG-2025-01"
+    }
+  ],
+  "citations": [],
+  "tools_invoked": [
+    {
+      "tool": "get_student_attendance",
+      "input": {
+        "student_id": "HCL2026-8891",
+        "course_code": "CS601"
+      },
+      "output": {
+        "student_id": "HCL2026-8891",
+        "course_code": "CS601",
+        "attendance_pct": 88.5,
+        "title": "Deep Learning & Neural Networks"
+      }
+    }
+  ],
+  "llm_call_count": 1,
+  "latency_ms": 2.28
+}

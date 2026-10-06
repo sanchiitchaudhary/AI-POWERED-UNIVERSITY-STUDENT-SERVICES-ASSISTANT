@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+      - "5173:5173"
+    environment:
+      - AS_OF_DATE=2026-10-06
+      - CHROMA_PATH=/app/data/chroma_db
+      - SQLITE_DB_PATH=/app/data/university.db
+      - OLLAMA_HOST=http://host.docker.internal:11434
+      - CLOUD_FALLBACK=false
+    volumes:
+      - ./data:/app/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
