@@ -10,6 +10,7 @@ import { TicketingSystem } from './components/TicketingSystem';
 import { HousingDining } from './components/HousingDining';
 import { AdvisorBooking } from './components/AdvisorBooking';
 import { CampusSecurity } from './components/CampusSecurity';
+import { DocumentVerification } from './components/DocumentVerification';
 import { DocumentModal } from './components/DocumentModal';
 
 import { 
@@ -163,6 +164,10 @@ export function App() {
               courses={courses}
               onOpenDocumentModal={(type) => setDocumentType(type)}
             />
+          )}
+
+          {activeTab === 'verification' && (
+            <DocumentVerification />
           )}
 
           {activeTab === 'financial' && (

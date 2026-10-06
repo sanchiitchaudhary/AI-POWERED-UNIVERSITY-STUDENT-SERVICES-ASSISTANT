@@ -29,6 +29,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'copilot', label: 'AI Student Copilot', icon: Bot, badge: 'AI 24/7', highlight: true },
     { id: 'academic', label: 'Academic & Degree Audit', icon: BookOpenCheck, badge: null },
     { id: 'certificates', label: 'Transcripts & Seals', icon: FileCheck2, badge: 'Instant' },
+    { id: 'verification', label: 'Public Verification', icon: ShieldAlert, badge: 'RSA-2048' },
     { id: 'financial', label: 'Financial Aid & Fees', icon: Wallet, badge: null },
     { id: 'tickets', label: 'Support Tickets', icon: TicketCheck, badge: openTicketCount > 0 ? `${openTicketCount} Active` : null },
     { id: 'housing', label: 'Housing & Dining', icon: Home, badge: null },
