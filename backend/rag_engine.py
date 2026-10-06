@@ -192,6 +192,10 @@ def query_vector_store(
         if dist > 1.20:
             continue
 
+        # Skip raw blank application form templates during vector search
+        if re.search(r'(application form|father\'s name|\.{5,}|fill in block letters)', doc_text, re.IGNORECASE):
+            continue
+
         eff_from = meta.get('effective_from', '2026-01-01')
         auth_level = int(meta.get('authority_level', 3))
 
