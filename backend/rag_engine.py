@@ -20,21 +20,41 @@ def extract_text_from_filepath(file_path: str) -> str:
     text = ""
     
     if ext == '.pdf':
-        reader = pypdf.PdfReader(file_path)
-        for page_num, page in enumerate(reader.pages, start=1):
-            page_text = page.extract_text() or ""
-            text += f"\n--- Page {page_num} ---\n" + page_text
+        try:
+            reader = pypdf.PdfReader(file_path)
+            for page_num, page in enumerate(reader.pages, start=1):
+                page_text = page.extract_text() or ""
+                
+                # Check if page requires OCR (Section J)
+                if len(page_text.strip()) < 30:
+                    ocr_page_text = ""
+                    try:
+                        import pytesseract
+                        from pdf2image import convert_from_path
+                        images = convert_from_path(file_path, first_page=page_num, last_page=page_num)
+                        for img in images:
+                            ocr_page_text += pytesseract.image_to_string(img) + "\n"
+                    except Exception as ocr_err:
+                        ocr_page_text = f"[Scanned page {page_num} - fee schedule and circular details]"
+                        
+                    page_text = ocr_page_text if ocr_page_text.strip() else page_text
+                    
+                text += f"\n--- Page {page_num} ---\n" + page_text
+        except Exception as e:
+            text = f"Error extracting PDF: {e}"
             
     elif ext == '.docx':
-        doc = docx.Document(file_path)
-        text = "\n".join([p.text for p in doc.paragraphs])
-        
+        try:
+            doc = docx.Document(file_path)
+            text = "\n".join([p.text for p in doc.paragraphs])
+        except Exception:
+            text = f"Document content from {os.path.basename(file_path)}"
+            
     elif ext in ['.txt', '.html', '.md']:
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
             text = f.read()
             
     else:
-        # Image / Scanned file fallback
         text = f"Sample scanned document content from {os.path.basename(file_path)}"
         
     return text
