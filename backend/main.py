@@ -335,7 +335,8 @@ def ask_question(
     sec = top_cite.section or "General"
     sec_label = sec if sec.lower().startswith("clause") else f"Clause {sec}"
 
-    clean_snippet = re.sub(r'[\-\_\.]{3,}', ' ', top_cite.snippet)
+    raw_snip = re.sub(r'^\[Document:[^\]]+\]\s*', '', top_cite.snippet)
+    clean_snippet = re.sub(r'[\-\_\.]{3,}', ' ', raw_snip)
     clean_snippet = re.sub(r'\s+', ' ', clean_snippet).strip()
 
     answer_text = f"According to '{top_cite.doc_title}' ({sec_label}): {clean_snippet}"

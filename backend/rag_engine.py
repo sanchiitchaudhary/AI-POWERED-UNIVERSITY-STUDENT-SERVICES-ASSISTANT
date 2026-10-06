@@ -30,12 +30,13 @@ def extract_text_from_filepath(file_path: str) -> str:
                     ocr_page_text = ""
                     try:
                         import pytesseract
-                        from pdf2image import convert_from_path
-                        images = convert_from_path(file_path, first_page=page_num, last_page=page_num)
-                        for img in images:
-                            ocr_page_text += pytesseract.image_to_string(img) + "\n"
+                        import pypdfium2 as pdfium
+                        pdf_doc = pdfium.PdfDocument(file_path)
+                        page_img = pdf_doc[page_num - 1].render(scale=2).to_pil()
+                        ocr_page_text = pytesseract.image_to_string(page_img)
+                        pdf_doc.close()
                     except Exception as ocr_err:
-                        ocr_page_text = f"[Scanned page {page_num} - fee schedule and circular details]"
+                        ocr_page_text = f"Official policy details for {doc_title} page {page_num}."
                         
                     page_text = ocr_page_text if ocr_page_text.strip() else page_text
                     
@@ -192,8 +193,8 @@ def query_vector_store(
         if dist > 1.20:
             continue
 
-        # Skip raw blank application form templates during vector search
-        if re.search(r'(application form|father\'s name|\.{5,}|fill in block letters)', doc_text, re.IGNORECASE):
+        # Skip raw blank application form templates & placeholder text during vector search
+        if re.search(r'(application form|father\'s name|\.{5,}|fill in block letters|\[Scanned page|Official policy details for .* page)', doc_text, re.IGNORECASE):
             continue
 
         eff_from = meta.get('effective_from', '2026-01-01')
