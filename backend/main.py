@@ -209,6 +209,30 @@ def ask_question(
                 trace_id=trace_id
             )
 
+    # Step 3b: Student Profile / GPA Querying Tool
+    if ("gpa" in q_lower or "cgpa" in q_lower) and student_id and ("my gpa" in q_lower or "my cgpa" in q_lower or "what is my" in q_lower):
+        profile = get_student_profile(student_id)
+        if profile:
+            tools_invoked.append(ToolInvocation(
+                tool="get_student_profile",
+                input={"student_id": student_id},
+                output=profile
+            ))
+            gpa_val = profile.get('cgpa', profile.get('gpa', 0.0))
+            latency = (time.time() - start_time) * 1000
+            log_audit_record(trace_id, as_of_date, student_id, "calculated", [], [], tools_invoked, 1, latency)
+            return AskResponse(
+                answer=f"Your current CGPA is {gpa_val:.2f}.",
+                answer_type="calculated",
+                confidence=0.99,
+                citations=[],
+                applied_rules=[],
+                tools_invoked=tools_invoked,
+                upcoming_changes=[],
+                retrieved_fact=f"Student {student_id} CGPA: {gpa_val}",
+                trace_id=trace_id
+            )
+
     # Step 4: RAG Vector Search & Precedence Rule Engine
     citations, upcoming_changes, is_only_level_5 = rag_service.query_legacy(req.question, as_of_date=as_of_date)
     rule, has_conflict, _ = get_applicable_rules("min_attendance_pct", as_of_date)

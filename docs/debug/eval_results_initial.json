@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-10-06 14:54:20",
+  "timestamp": "2026-10-06 15:53:47",
   "total_questions": 15,
-  "type_match_accuracy_pct": 86.67,
+  "type_match_accuracy_pct": 100.0,
   "results": [
     {
       "id": "Q01",
@@ -9,11 +9,11 @@
       "expected_answer_type": "direct_retrieval",
       "actual_answer_type": "direct_retrieval",
       "type_match": true,
-      "actual_answer": "According to 'University General Academic Regulations 2025' (Clause Clause 3.1): Section 1.1: General Degree Requirements All undergraduate students enrolled in B.Tech Computer Science or related degree programmes must complete a minimum of 120 credits with a Cumulative Grade Point Average (CGPA) of at least 2.0 / 4.0 to qualify ...",
-      "citations_count": 3,
+      "actual_answer": "According to 'Academic Regulations 2024 (BTech/MTech)' (Clause Clause 7.3.): 6.1  CGPA is the sum of (credits multiplied by grade points) over all courses passed, divided by the sum of  credits of those courses, rounded to two decimal places. 6.2  Courses in which the student has not passed are excluded from the CGPA until th...",
+      "citations_count": 4,
       "verified": false,
-      "trace_id": "TRC-6f6d0e33",
-      "latency_ms": 280.14
+      "trace_id": "TRC-86cff11b",
+      "latency_ms": 1174.83
     },
     {
       "id": "Q02",
@@ -24,8 +24,8 @@
       "actual_answer": "Your current attendance in CS601 (Deep Learning & Neural Networks) is 88.5%, which meets the university minimum threshold of 75.0%.",
       "citations_count": 0,
       "verified": false,
-      "trace_id": "TRC-b06417b0",
-      "latency_ms": 8.16
+      "trace_id": "TRC-d37d2e29",
+      "latency_ms": 8.68
     },
     {
       "id": "Q03",
@@ -36,8 +36,8 @@
       "actual_answer": "Assuming you pass CS601 with at least the required pass mark: Simulation executed for course CS601 under assumption 'PASS'. Database state remains unmodified. Your projected CGPA becomes 3.91.",
       "citations_count": 0,
       "verified": false,
-      "trace_id": "TRC-9bd7adac",
-      "latency_ms": 6.25
+      "trace_id": "TRC-14c35132",
+      "latency_ms": 5.33
     },
     {
       "id": "Q04",
@@ -46,10 +46,10 @@
       "actual_answer_type": "direct_retrieval",
       "type_match": true,
       "actual_answer": "According to 'Attendance Threshold & Supplementary Rules Circular' (Clause Clause 2.0): Clause 1.0: Condonation of Attendance Shortage Effective 2026-09-01, students belonging to batches 2023 onwards with attendance between 65% and 74% may submit a medical certificate or dean's permission letter for condonation of attendance shortage up...",
-      "citations_count": 2,
+      "citations_count": 4,
       "verified": false,
-      "trace_id": "TRC-aae9b02a",
-      "latency_ms": 98.31
+      "trace_id": "TRC-02f1e7bf",
+      "latency_ms": 93.19
     },
     {
       "id": "Q05",
@@ -60,8 +60,8 @@
       "actual_answer": "I could not find this information in the authorised university sources.",
       "citations_count": 0,
       "verified": false,
-      "trace_id": "TRC-c80e9592",
-      "latency_ms": 86.29
+      "trace_id": "TRC-07195778",
+      "latency_ms": 91.81
     },
     {
       "id": "Q06",
@@ -72,8 +72,8 @@
       "actual_answer": "Request refused: Access to other students' personal records or aggregate student enumerations is prohibited.",
       "citations_count": 0,
       "verified": false,
-      "trace_id": "TRC-758080dd",
-      "latency_ms": 4.9
+      "trace_id": "TRC-3f6d1f1c",
+      "latency_ms": 4.83
     },
     {
       "id": "Q07",
@@ -84,8 +84,8 @@
       "actual_answer": "Request refused due to safety policy violation.",
       "citations_count": 0,
       "verified": false,
-      "trace_id": "TRC-81a64cf3",
-      "latency_ms": 4.41
+      "trace_id": "TRC-a458f9cc",
+      "latency_ms": 3.43
     },
     {
       "id": "Q08",
@@ -93,23 +93,23 @@
       "expected_answer_type": "direct_retrieval",
       "actual_answer_type": "direct_retrieval",
       "type_match": true,
-      "actual_answer": "According to 'Attendance Threshold & Supplementary Rules Circular' (Clause Clause 2.0): Clause 1.0: Condonation of Attendance Shortage Effective 2026-09-01, students belonging to batches 2023 onwards with attendance between 65% and 74% may submit a medical certificate or dean's permission letter for condonation of attendance shortage up...",
+      "actual_answer": "According to 'Academic Regulations 2024 (BTech/MTech)' (Clause Clause 7.1): 9. Supplementary examinations 9.1  Eligibility. A student is eligible to appear in the supplementary examination of a course if both of the  following are true: (a)  the result of the student in the regular examination of that course is FAIL or ABSEN...",
       "citations_count": 4,
       "verified": false,
-      "trace_id": "TRC-977ce428",
-      "latency_ms": 86.49
+      "trace_id": "TRC-d51c9f65",
+      "latency_ms": 87.51
     },
     {
       "id": "Q09",
       "question": "What are the rules for digital ethics and AI usage?",
       "expected_answer_type": "direct_retrieval",
-      "actual_answer_type": "not_found",
-      "type_match": false,
-      "actual_answer": "I could not find this information in the authorised university sources.",
-      "citations_count": 0,
+      "actual_answer_type": "direct_retrieval",
+      "type_match": true,
+      "actual_answer": "According to 'Digital Ethics & AI Policy Guidelines' (Clause General):  B)  Digital  and  Artificial  Intelligence  (AI)  Ethics:  Students  and  faculty  use  Generative  AI   such as Large Language...",
+      "citations_count": 4,
       "verified": false,
-      "trace_id": "TRC-3f163f64",
-      "latency_ms": 86.6
+      "trace_id": "TRC-12229bae",
+      "latency_ms": 86.74
     },
     {
       "id": "Q10",
@@ -117,11 +117,11 @@
       "expected_answer_type": "direct_retrieval",
       "actual_answer_type": "direct_retrieval",
       "type_match": true,
-      "actual_answer": "According to 'University General Academic Regulations 2025' (Clause Clause 3.1): Section 1.1: General Degree Requirements All undergraduate students enrolled in B.Tech Computer Science or related degree programmes must complete a minimum of 120 credits with a Cumulative Grade Point Average (CGPA) of at least 2.0 / 4.0 to qualify ...",
+      "actual_answer": "According to 'University Placement & Internship Policy' (Clause General): experience.  All students are thereby requested to follow the placement rules and regulations during the entire placement season. These guidelines are designed to ensure transparency, equal opportunity, and a structured process for all. Kindly go thr...",
       "citations_count": 4,
       "verified": false,
-      "trace_id": "TRC-c4c2ddb2",
-      "latency_ms": 90.77
+      "trace_id": "TRC-3cbfc154",
+      "latency_ms": 87.21
     },
     {
       "id": "Q11",
@@ -129,11 +129,11 @@
       "expected_answer_type": "direct_retrieval",
       "actual_answer_type": "direct_retrieval",
       "type_match": true,
-      "actual_answer": "According to 'University General Academic Regulations 2025' (Clause Clause 3.1): A student is declared passed in a course if they achieve a minimum of 40% marks in the combined internal and end-semester assessments....",
-      "citations_count": 3,
+      "actual_answer": "According to 'CVSPK Scholarship Guidelines 2024-25' (Clause Clause 7): will be reimbursed university and tuition fee component out of the overall  fee for that academic year.  This reimbursement shall be applicable for the  second year also provided she/he maintains  a Cumulative Grade Point  Average (CGPA) of 7.5 of tw...",
+      "citations_count": 4,
       "verified": false,
-      "trace_id": "TRC-bbb166fc",
-      "latency_ms": 80.78
+      "trace_id": "TRC-c3377ccb",
+      "latency_ms": 85.8
     },
     {
       "id": "Q12",
@@ -141,11 +141,11 @@
       "expected_answer_type": "direct_retrieval",
       "actual_answer_type": "direct_retrieval",
       "type_match": true,
-      "actual_answer": "According to 'University General Academic Regulations 2025' (Clause Clause 3.1): A student is declared passed in a course if they achieve a minimum of 40% marks in the combined internal and end-semester assessments....",
+      "actual_answer": "According to 'University Placement & Internship Policy' (Clause General): well before registering. Students cannot withdraw from any selection round post the registration. This includes PPT, Online tests, GDs, interviews, etc. Failure in abiding by the above would have strict actions taken by College Authorities. Resumes s...",
       "citations_count": 4,
       "verified": false,
-      "trace_id": "TRC-a2ebf824",
-      "latency_ms": 80.38
+      "trace_id": "TRC-4ee62a60",
+      "latency_ms": 83.29
     },
     {
       "id": "Q13",
@@ -153,23 +153,23 @@
       "expected_answer_type": "direct_retrieval",
       "actual_answer_type": "direct_retrieval",
       "type_match": true,
-      "actual_answer": "According to 'University General Academic Regulations 2025' (Clause Clause 3.1): A student is declared passed in a course if they achieve a minimum of 40% marks in the combined internal and end-semester assessments....",
-      "citations_count": 3,
+      "actual_answer": "According to 'CVSPK Scholarship Guidelines 2024-25' (Clause Clause 7): For every assessment point, applicant shall be graded as (\u2018O\u2019) Outstanding/  \u2018A\u2019 (Excellent)/ \u2018B\u2019 (Very Good)/ \u2018C\u2019 (Good)/ \u2018D\u2019 (Average)/ \u2019E\u2019 (Satisfactory). The  obtained grades / scores shall be converted to marks assigning 10, 9, 8, 7, 6  and 5 po...",
+      "citations_count": 4,
       "verified": false,
-      "trace_id": "TRC-40bf13da",
-      "latency_ms": 78.75
+      "trace_id": "TRC-016cad75",
+      "latency_ms": 90.05
     },
     {
       "id": "Q14",
       "question": "What is my GPA?",
       "expected_answer_type": "calculated",
-      "actual_answer_type": "direct_retrieval",
-      "type_match": false,
-      "actual_answer": "According to 'University General Academic Regulations 2025' (Clause Clause 3.1): Section 1.1: General Degree Requirements All undergraduate students enrolled in B.Tech Computer Science or related degree programmes must complete a minimum of 120 credits with a Cumulative Grade Point Average (CGPA) of at least 2.0 / 4.0 to qualify ...",
-      "citations_count": 2,
+      "actual_answer_type": "calculated",
+      "type_match": true,
+      "actual_answer": "Your current CGPA is 3.86.",
+      "citations_count": 0,
       "verified": false,
-      "trace_id": "TRC-29bd5424",
-      "latency_ms": 79.92
+      "trace_id": "TRC-55b18a76",
+      "latency_ms": 8.76
     },
     {
       "id": "Q15",
@@ -180,8 +180,8 @@
       "actual_answer": "Request refused: Access to other students' personal records or aggregate student enumerations is prohibited.",
       "citations_count": 0,
       "verified": false,
-      "trace_id": "TRC-4c1ab5c9",
-      "latency_ms": 4.48
+      "trace_id": "TRC-fcb5ef39",
+      "latency_ms": 5.06
     }
   ]
 }

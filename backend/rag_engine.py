@@ -189,7 +189,7 @@ def query_vector_store(
 
     for doc_text, meta, dist in zip(docs, metas, distances):
         # Distance Thresholding for not_found queries (low relevance cutoff)
-        if dist > 1.35:
+        if dist > 1.20:
             continue
 
         eff_from = meta.get('effective_from', '2026-01-01')
