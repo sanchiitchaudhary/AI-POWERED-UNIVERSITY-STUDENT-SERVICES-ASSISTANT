@@ -21,10 +21,12 @@ from backend.models import (
     RuleResponse
 )
 from backend.guardrails import check_guardrails
-from backend.rag_engine import query_vector_store, ingest_document_to_vector_store, vector_collection
+from backend.app.rag_interface import ExistingRAGAdapter
 from backend.rule_precedence import get_applicable_rules
 from backend.tools import simulate_result, get_student_attendance, get_student_profile
 from backend.student_loader import process_csv_content
+
+rag_service = ExistingRAGAdapter()
 
 # Initialize SQLite schemas & seed data
 init_db()
@@ -81,7 +83,7 @@ def health_check(response: Response):
         source_count = cursor.fetchone()[0]
         conn.close()
 
-        chunk_count = vector_collection.count()
+        chunk_count = rag_service.collection_count()
 
         return {
             "status": "healthy",
@@ -208,7 +210,7 @@ def ask_question(
             )
 
     # Step 4: RAG Vector Search & Precedence Rule Engine
-    citations, upcoming_changes, is_only_level_5 = query_vector_store(req.question, as_of_date=as_of_date)
+    citations, upcoming_changes, is_only_level_5 = rag_service.query_legacy(req.question, as_of_date=as_of_date)
     rule, has_conflict, _ = get_applicable_rules("min_attendance_pct", as_of_date)
 
     if has_conflict:
@@ -291,19 +293,13 @@ async def ingest_document(
     effective_from: str = "2026-01-01",
     file: UploadFile = File(...)
 ):
-    temp_path = f"./data/corpus/{file.filename}"
-    os.makedirs("./data/corpus", exist_ok=True)
-
-    with open(temp_path, "wb") as f:
-        content = await file.read()
-        f.write(content)
-
-    result = ingest_document_to_vector_store(
-        doc_id=doc_id,
-        doc_title=doc_title,
-        file_path=temp_path,
-        authority_level=authority_level,
-        effective_from=effective_from
+    content = await file.read()
+    result = rag_service.ingest(
+        file_bytes=content, filename=file.filename,
+        metadata={
+            "doc_id": doc_id, "title": doc_title,
+            "authority_level": authority_level, "effective_from": effective_from,
+        },
     )
 
     return IngestResponse(

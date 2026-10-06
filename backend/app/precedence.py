@@ -95,6 +95,20 @@ def _matches_scope(candidate: Candidate, ctx: Context) -> bool:
     return _programme_applies(candidate.scope_programmes, ctx.programme) and _batch_applies(candidate.scope_batches, ctx.batch_year)
 
 
+def candidate_status(candidate: Candidate, ctx: Context) -> str:
+    """Classify a candidate as applicable, upcoming, out_of_scope, or expired."""
+    if not _matches_scope(candidate, ctx):
+        return "out_of_scope"
+    as_of = _as_date(ctx.as_of_date, "as_of_date")
+    starts = _as_date(candidate.effective_from, f"effective_from for {candidate.key}")
+    if starts > as_of:
+        return "upcoming"
+    ends = _as_date(candidate.effective_to, f"effective_to for {candidate.key}") if candidate.effective_to else None
+    if ends is not None and ends < as_of:
+        return "expired"
+    return "applicable"
+
+
 def _supersedes_tokens(value: Sequence[str] | str | None) -> list[str]:
     if value is None:
         return []
@@ -120,7 +134,7 @@ def _loser(candidate: Candidate, reason: str, step: int) -> dict[str, Any]:
 
 def resolve_candidates(candidates: Iterable[Candidate], ctx: Context) -> PrecedenceDecision:
     """Resolve candidates under Annex A steps 1 through 5."""
-    as_of = _as_date(ctx.as_of_date, "as_of_date")
+    _as_date(ctx.as_of_date, "as_of_date")
     losers: list[dict[str, Any]] = []
     upcoming: list[Candidate] = []
     applicable: list[Candidate] = []
@@ -129,15 +143,14 @@ def resolve_candidates(candidates: Iterable[Candidate], ctx: Context) -> Precede
     for candidate in candidates:
         if not 1 <= int(candidate.authority_level) <= 5:
             raise ValueError(f"Candidate {candidate.key!r} has authority_level outside 1..5")
-        if not _matches_scope(candidate, ctx):
+        status = candidate_status(candidate, ctx)
+        if status == "out_of_scope":
             losers.append(_loser(candidate, "scope excludes this programme or batch", 1))
             continue
-        starts = _as_date(candidate.effective_from, f"effective_from for {candidate.key}")
-        if starts > as_of:
+        if status == "upcoming":
             upcoming.append(candidate)
             continue
-        ends = _as_date(candidate.effective_to, f"effective_to for {candidate.key}") if candidate.effective_to else None
-        if ends is not None and ends < as_of:
+        if status == "expired":
             losers.append(_loser(candidate, "not effective on the supplied as_of_date", 1))
             continue
         applicable.append(candidate)

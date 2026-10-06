@@ -68,10 +68,10 @@ def validate_programme_marks(tmp_path, programme, total, external, result):
     write_csv(csv_dir, "results.csv", ["student_id", "course_code", "exam_session", "exam_type", "internal_marks", "external_marks", "total_marks", "max_marks", "result"], [["S1001", "CS101", "2026-MAY", "REGULAR", total - external, external, total, 100, result]])
     rules_path = tmp_path / "rule_registry.csv"
     write_csv(tmp_path, "rule_registry.csv", ["rule_id", "description", "parameter", "operator", "value", "scope_programmes", "scope_batches", "effective_from", "effective_to", "source_doc_id", "source_section"], [
-        ["BTECH-PASS", "B.Tech pass total", "total_marks", ">=", 40, "B.Tech", "ALL", "2025-01-01", "", "DOC-TEST", "1"],
-        ["BTECH-EXT", "B.Tech external minimum", "external_marks", ">=", 24, "B.Tech", "ALL", "2025-01-01", "", "DOC-TEST", "2"],
-        ["MTECH-PASS", "M.Tech pass total", "total_marks", ">=", 50, "M.Tech", "ALL", "2025-01-01", "", "DOC-TEST", "3"],
-        ["MTECH-EXT", "M.Tech external minimum", "external_marks", ">=", 30, "M.Tech", "ALL", "2025-01-01", "", "DOC-TEST", "4"],
+        ["BTECH-PASS", "B.Tech pass total", "total_marks", ">=", 40, "B.Tech", "ALL", "2025-01-01", "", "ACAD-REG-2024", "4.2"],
+        ["BTECH-EXT", "B.Tech external minimum", "external_marks", ">=", 24, "B.Tech", "ALL", "2025-01-01", "", "ACAD-REG-2024", "4.3"],
+        ["MTECH-PASS", "M.Tech pass total", "total_marks", ">=", 50, "M.Tech", "ALL", "2025-01-01", "", "ACAD-REG-2024", "4.2"],
+        ["MTECH-EXT", "M.Tech external minimum", "external_marks", ">=", 30, "M.Tech", "ALL", "2025-01-01", "", "ACAD-REG-2024", "4.3"],
     ])
     return validate_dir(csv_dir, rules_csv=rules_path, print_report=False)[0]
 

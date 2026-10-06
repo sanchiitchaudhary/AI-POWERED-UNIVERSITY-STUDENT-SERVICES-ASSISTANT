@@ -1,19 +1,25 @@
-"""Validate Annex C CSV files without opening or modifying a database."""
+"""Validate Annex C CSV files without writing to a persistent database."""
 from __future__ import annotations
 
 import argparse
 import csv
 import re
 import sqlite3
+from contextlib import contextmanager
+from datetime import date
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 if __package__ in (None, ""):
     import sys
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from app.db import get_conn, init_db
 from app.results_util import latest_attempts, parse_exam_session
+from app.rules import RuleConflict, RuleNotFound, compare_values, load_rules, resolve_parameter
+from scripts.load_rules import load_rule_rows
+from scripts.load_sources import load_source_rows
 
 
 class Student(BaseModel):
@@ -81,71 +87,52 @@ def _load(path: Path, kind: str, violations: list[tuple[str, int, str, str]]) ->
     return parsed
 
 
-def _rules_from_db(db_path: str | Path | None) -> list[dict[str, Any]]:
-    if not db_path or not Path(db_path).exists():
-        return []
-    try:
-        with sqlite3.connect(str(db_path)) as conn:
-            conn.row_factory = sqlite3.Row
-            exists = conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='rule_registry'").fetchone()
-            return [dict(r) for r in conn.execute("SELECT * FROM rule_registry")] if exists else []
-    except sqlite3.Error:
-        return []
-
-
-def _rules_from_csv(path: str | Path | None) -> list[dict[str, Any]]:
-    if not path:
-        return []
-    try:
-        with Path(path).open(newline="", encoding="utf-8-sig") as f:
-            return list(csv.DictReader(f))
-    except (OSError, csv.Error):
-        return []
-
-
-def _thresholds(rules: list[dict[str, Any]]) -> list[tuple[str, float]]:
+def _thresholds(rules: list[Any]) -> list[tuple[str, float]]:
     out = []
     for rule in rules:
-        name = str(rule.get("parameter") or rule.get("rule_id") or "").lower()
+        name = str(rule.parameter or "").lower()
         if any(s in name for s in ("attendance", "cgpa", "pass", "external", "total")):
             try:
-                out.append((name, float(rule.get("value"))))
+                out.append((name, float(rule.value)))
             except (TypeError, ValueError):
                 pass
     return out
 
 
-def _scope_values(raw: Any) -> list[str]:
-    return [part.strip() for part in str(raw or "ALL").split(",") if part.strip()]
+@contextmanager
+def _registry_connection(db_path: str | Path | None, rules_csv: str | Path | None) -> Iterator[sqlite3.Connection]:
+    """Open an existing registry read-only in practice, or stage CSVs in memory."""
+    if db_path and Path(db_path).exists():
+        conn = get_conn(db_path)
+        tables = {row[0] for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        if {"rule_registry", "source_register"}.issubset(tables):
+            try:
+                yield conn
+            finally:
+                conn.close()
+            return
+        conn.close()
+
+    conn = sqlite3.connect(":memory:")
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON")
+    init_db(conn)
+    root = Path(__file__).resolve().parents[2] / "data"
+    source_path = root / "source_register.csv"
+    rule_path = Path(rules_csv) if rules_csv else root / "rule_registry.csv"
+    try:
+        if source_path.exists():
+            with source_path.open(newline="", encoding="utf-8-sig") as f:
+                load_source_rows(list(csv.DictReader(f)), conn)
+        if rule_path.exists():
+            with rule_path.open(newline="", encoding="utf-8-sig") as f:
+                load_rule_rows(list(csv.DictReader(f)), conn)
+        yield conn
+    finally:
+        conn.close()
 
 
-def _scoped_threshold(rules: list[dict[str, Any]], parameter: str, programme: str, batch: int) -> float | None:
-    """Choose the most specific matching registry threshold for this student."""
-    best: tuple[int, int] | None = None
-    value: float | None = None
-    for rule in rules:
-        rule_parameter = str(rule.get("parameter") or "").strip().lower()
-        if rule_parameter != parameter:
-            continue
-        programmes = _scope_values(rule.get("scope_programmes"))
-        batches = _scope_values(rule.get("scope_batches"))
-        matching_programmes = [p for p in programmes if p.upper() == "ALL" or programme.casefold().startswith(p.casefold())]
-        matching_batches = [b for b in batches if b.upper() == "ALL" or str(batch) == b]
-        if not matching_programmes or not matching_batches:
-            continue
-        programme_specificity = max((len(p) for p in matching_programmes if p.upper() != "ALL"), default=0)
-        batch_specificity = max((len(b) for b in matching_batches if b.upper() != "ALL"), default=0)
-        score = (programme_specificity, batch_specificity)
-        try:
-            candidate = float(rule.get("value"))
-        except (TypeError, ValueError):
-            continue
-        if best is None or score > best:
-            best, value = score, candidate
-    return value
-
-
-def validate_dir(directory: str | Path, db_path: str | Path | None = None, *, rules_csv: str | Path | None = None, print_report: bool = True) -> tuple[list[tuple[str, int, str, str]], list[tuple[str, int, str, str]]]:
+def validate_dir(directory: str | Path, db_path: str | Path | None = None, *, rules_csv: str | Path | None = None, as_of_date: str | None = None, print_report: bool = True) -> tuple[list[tuple[str, int, str, str]], list[tuple[str, int, str, str]]]:
     """Return (errors, warnings); no database writes are performed."""
     root = Path(directory)
     violations: list[tuple[str, int, str, str]] = []
@@ -198,42 +185,52 @@ def validate_dir(directory: str | Path, db_path: str | Path | None = None, *, ru
         if s_ok and c_ok and student_rows[a.student_id][1].programme != course_rows[a.course_code][1].programme:
             errors.append((FILES["attendance"], n, "programme_match", "Course programme differs from student's programme"))
 
-    default_rules = Path(__file__).resolve().parents[2] / "data" / "rule_registry.csv"
-    rules = _rules_from_db(db_path) or _rules_from_csv(rules_csv) or _rules_from_csv(default_rules)
-    thresholds = _thresholds(rules)
+    evaluation_date = as_of_date or date.today().isoformat()
     parsed_result_rows: list[tuple[int, Result]] = []
     failed_just_below_pass = False
-    for n, r in results:
-        s_ok = fk(FILES["results"], n, r.student_id, student_rows, "student")
-        c_ok = fk(FILES["results"], n, r.course_code, course_rows, "course")
-        if s_ok and c_ok and student_rows[r.student_id][1].programme != course_rows[r.course_code][1].programme:
-            errors.append((FILES["results"], n, "programme_match", "Course programme differs from student's programme"))
-        if r.exam_type not in {"REGULAR", "SUPPLEMENTARY"}:
-            errors.append((FILES["results"], n, "exam_type_enum", "exam_type must be REGULAR or SUPPLEMENTARY"))
-        try:
-            parse_exam_session(r.exam_session)
-        except ValueError as e:
-            errors.append((FILES["results"], n, "exam_session_format", str(e)))
-        if r.result not in {"PASS", "FAIL", "ABSENT", "DETAINED"}:
-            errors.append((FILES["results"], n, "result_enum", "Invalid result value"))
-        marks_ok = 0 <= r.internal_marks <= r.max_marks and 0 <= r.external_marks <= r.max_marks and r.max_marks > 0
-        if not marks_ok or r.internal_marks + r.external_marks > r.max_marks:
-            errors.append((FILES["results"], n, "marks_in_range", "Marks must be nonnegative and their sum cannot exceed max_marks"))
-        if abs(r.total_marks - r.internal_marks - r.external_marks) > 1e-9:
-            errors.append((FILES["results"], n, "total_matches_components", "total_marks must equal internal_marks + external_marks"))
-        if r.result == "ABSENT" and (r.internal_marks != 0 or r.external_marks != 0 or r.total_marks != 0):
-            errors.append((FILES["results"], n, "absent_zero_marks", "ABSENT rows must have zero marks"))
-        if r.result in {"PASS", "FAIL"} and s_ok:
-            student = student_rows[r.student_id][1]
-            pass_total = _scoped_threshold(rules, "total_marks", student.programme, student.batch_year)
-            pass_external = _scoped_threshold(rules, "external_marks", student.programme, student.batch_year)
-            if pass_total is not None and pass_external is not None:
-                should_pass = r.total_marks >= pass_total and r.external_marks >= pass_external
-                if should_pass != (r.result == "PASS"):
-                    errors.append((FILES["results"], n, "result_matches_marks", f"Result conflicts with registry thresholds ({pass_total:g} total, {pass_external:g} external) for programme {student.programme}"))
-                if r.result == "FAIL" and (r.total_marks == pass_total - 1 or r.external_marks == pass_external - 1):
-                    failed_just_below_pass = True
-        parsed_result_rows.append((n, r))
+    try:
+        with _registry_connection(db_path, rules_csv) as rule_conn:
+            registry_rules = load_rules(rule_conn)
+            thresholds = _thresholds(registry_rules)
+            for n, r in results:
+                s_ok = fk(FILES["results"], n, r.student_id, student_rows, "student")
+                c_ok = fk(FILES["results"], n, r.course_code, course_rows, "course")
+                if s_ok and c_ok and student_rows[r.student_id][1].programme != course_rows[r.course_code][1].programme:
+                    errors.append((FILES["results"], n, "programme_match", "Course programme differs from student's programme"))
+                if r.exam_type not in {"REGULAR", "SUPPLEMENTARY"}:
+                    errors.append((FILES["results"], n, "exam_type_enum", "exam_type must be REGULAR or SUPPLEMENTARY"))
+                try:
+                    parse_exam_session(r.exam_session)
+                except ValueError as e:
+                    errors.append((FILES["results"], n, "exam_session_format", str(e)))
+                if r.result not in {"PASS", "FAIL", "ABSENT", "DETAINED"}:
+                    errors.append((FILES["results"], n, "result_enum", "Invalid result value"))
+                marks_ok = 0 <= r.internal_marks <= r.max_marks and 0 <= r.external_marks <= r.max_marks and r.max_marks > 0
+                if not marks_ok or r.internal_marks + r.external_marks > r.max_marks:
+                    errors.append((FILES["results"], n, "marks_in_range", "Marks must be nonnegative and their sum cannot exceed max_marks"))
+                if abs(r.total_marks - r.internal_marks - r.external_marks) > 1e-9:
+                    errors.append((FILES["results"], n, "total_matches_components", "total_marks must equal internal_marks + external_marks"))
+                if r.result == "ABSENT" and (r.internal_marks != 0 or r.external_marks != 0 or r.total_marks != 0):
+                    errors.append((FILES["results"], n, "absent_zero_marks", "ABSENT rows must have zero marks"))
+                if r.result in {"PASS", "FAIL"} and s_ok:
+                    student = student_rows[r.student_id][1]
+                    try:
+                        total_rule, _, _ = resolve_parameter("total_marks", student.programme, student.batch_year, evaluation_date, conn=rule_conn)
+                        external_rule, _, _ = resolve_parameter("external_marks", student.programme, student.batch_year, evaluation_date, conn=rule_conn)
+                    except RuleNotFound:
+                        pass
+                    except RuleConflict as exc:
+                        errors.append((FILES["results"], n, "result_threshold_conflict", str(exc)))
+                    else:
+                        should_pass = compare_values(r.total_marks, total_rule.operator, total_rule.value) and compare_values(r.external_marks, external_rule.operator, external_rule.value)
+                        if should_pass != (r.result == "PASS"):
+                            errors.append((FILES["results"], n, "result_matches_marks", f"Result conflicts with registry rules {total_rule.rule_id}/{external_rule.rule_id} for programme {student.programme}"))
+                        if r.result == "FAIL" and (r.total_marks == float(total_rule.value) - 1 or r.external_marks == float(external_rule.value) - 1):
+                            failed_just_below_pass = True
+                parsed_result_rows.append((n, r))
+    except (OSError, csv.Error, sqlite3.Error, ValueError) as e:
+        errors.append(("rule_registry.csv", 0, "registry_load", str(e)))
+        thresholds = []
 
     fail_counts: dict[str, int] = {}
     if not any(rule in {"exam_session_format", "exam_type_enum"} for _, _, rule, _ in errors):
@@ -293,8 +290,9 @@ def main() -> int:
     parser.add_argument("--dir", required=True)
     parser.add_argument("--db", help="Optional SQLite database path for rule_registry thresholds")
     parser.add_argument("--rules-csv", help="Optional rule_registry CSV for threshold checks")
+    parser.add_argument("--as-of-date", help="Rule evaluation date in YYYY-MM-DD form; defaults to today")
     args = parser.parse_args()
-    errors, _ = validate_dir(args.dir, args.db, rules_csv=args.rules_csv)
+    errors, _ = validate_dir(args.dir, args.db, rules_csv=args.rules_csv, as_of_date=args.as_of_date)
     return 1 if errors else 0
 
 
