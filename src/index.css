@@ -25,36 +25,44 @@
   background: rgba(99, 102, 241, 0.8);
 }
 
-/* Dark charcoal canvas with off-white card surfaces */
+/* Sleek Dark Obsidian Glassmorphism Theme */
 body {
-  background: #12141c;
+  background: #090a0f;
+  color: #f8fafc;
 }
 
 .glass-panel {
-  background: #f3f5f7;
-  border: 1px solid rgba(148, 163, 184, 0.45);
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-card {
-  background: #f8f9fa;
-  border: 1px solid rgba(203, 213, 225, 0.9);
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
 }
 
 .glass-card:hover {
-  border-color: rgba(100, 116, 139, 0.5);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
 }
 
 .glass-button {
-  background: #f8fafc;
-  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.2s ease;
+  color: #f8fafc;
 }
 
 .glass-button:hover {
-  background: #f1f5f9;
-  border-color: rgba(51, 65, 85, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
 }
 
 /* Keyframe Animations */
