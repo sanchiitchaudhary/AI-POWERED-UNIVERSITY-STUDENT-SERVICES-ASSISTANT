@@ -68,11 +68,14 @@ How can I help you today? You can ask me to:
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const quickPrompts = [
-    { text: "Can I get an official transcript for grad school applications?", icon: FileText, category: 'Academic' },
     { text: "What is my current fee balance and scholarship status?", icon: DollarSign, category: 'Financial' },
-    { text: "How do I request a bonafide letter for my visa renewal?", icon: Award, category: 'Administrative' },
-    { text: "My hostel room AC needs filter cleaning", icon: Building, category: 'Housing' },
-    { text: "Who is my academic advisor and how do I book a meeting?", icon: BookOpen, category: 'Academic' },
+    { text: "What is the fee structure for Semester III, V, and VII?", icon: FileText, category: 'Financial' },
+    { text: "What is the policy for summer semester course registration?", icon: BookOpen, category: 'Academic' },
+    { text: "What are the placement eligibility criteria for undergraduate students?", icon: Award, category: 'Academic' },
+    { text: "What are the rules for digital ethics and AI usage?", icon: Building, category: 'Administrative' },
+    { text: "What is the condonation attendance limit for batch 2023 onwards?", icon: Zap, category: 'Academic' },
+    { text: "What is the eligibility mark range for supplementary exams?", icon: HelpCircle, category: 'Academic' },
+    { text: "What is the minimum CGPA required for graduation?", icon: Award, category: 'Academic' },
   ];
 
   const scrollToBottom = () => {
