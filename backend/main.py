@@ -305,7 +305,37 @@ def ask_question(
 
     # Formulate Direct Retrieval Answer
     top_cite = citations[0]
-    answer_text = f"According to '{top_cite.doc_title}' (Clause {top_cite.section}): {top_cite.snippet}"
+    sec = top_cite.section or "General"
+    sec_label = sec if sec.lower().startswith("clause") else f"Clause {sec}"
+
+    clean_snippet = re.sub(r'[\-\_\.]{3,}', ' ', top_cite.snippet)
+    clean_snippet = re.sub(r'\s+', ' ', clean_snippet).strip()
+
+    answer_text = f"According to '{top_cite.doc_title}' ({sec_label}): {clean_snippet}"
+
+    if OLLAMA_HOST:
+        try:
+            import httpx
+            prompt = f"Summarize the following official university rule excerpt in 1-2 clear, student-friendly sentences. Do not add external facts.\n\nText: {clean_snippet}"
+            url = f"{OLLAMA_HOST.rstrip('/')}/api/chat" if not OLLAMA_HOST.endswith("/api/chat") else OLLAMA_HOST
+            headers = {"Authorization": f"Bearer {OLLAMA_API_KEY}"} if OLLAMA_API_KEY else {}
+            resp = httpx.post(
+                url,
+                json={
+                    "model": OLLAMA_MODEL,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "stream": False,
+                    "options": {"temperature": 0}
+                },
+                headers=headers,
+                timeout=2.0
+            )
+            if resp.status_code == 200:
+                summary = resp.json().get("message", {}).get("content", "").strip()
+                if summary and len(summary) > 10:
+                    answer_text = f"According to '{top_cite.doc_title}' ({sec_label}): {summary}"
+        except Exception:
+            pass
 
     latency = (time.time() - start_time) * 1000
     log_audit_record(trace_id, as_of_date, student_id, "direct_retrieval", citations, applied_rules, [], 1, latency)
